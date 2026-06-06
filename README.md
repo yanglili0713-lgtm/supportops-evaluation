@@ -11,6 +11,7 @@ SupportOps Agent 是一个面向企业客服与技术支持场景的 Agent 工�
 - Skills 企业 SOP 流程约束
 - Trace 可观测性
 - Eval 失败模式评估
+- Hybrid RAG 融合检索
 
 项目刻意围绕真实 Agent 工程问题设计，例如：
 
@@ -85,6 +86,26 @@ app/tracing.py
 
 evals/
   评估 Router、Memory、RAG grounding 和高置信错误路由等失败模式。
+Phase 7：Hybrid RAG
+
+实现内容：
+
+新增 SimpleVectorStore、HybridRetriever 和轻量 reranker；
+不依赖真实 embedding API，默认使用本地 token vector + cosine similarity；
+支持 BM25 + Vector 融合检索，并保留 doc_id、chunk_id、source citation；
+新增 hybrid_rag_eval 并集成到 evals/run_all.py。
+
+真实问题：
+
+BM25 命中关键词稳定，但面对“文档导入后答案没有依据”这类近义表达时召回不足；纯向量检索又可能让 citation 稳定性变差。
+
+解决方式：
+
+用 Hybrid RAG 让 BM25 负责精确和 citation 稳定性，vector search 补足语义召回，并用 reranker 做轻量重排。
+
+挑战记录：
+
+docs/challenges/phase7_hybrid_rag_issue.md
 3. 已完成阶段
 Phase 1：RAG MVP
 
@@ -242,6 +263,7 @@ Router accuracy：1.0
 high_confidence_wrong_route：[]
 memory_regression：passed
 rag_grounding：passed
+hybrid_rag：passed
 5. 快速运行
 5.1 安装依赖
 uv venv --python 3.12

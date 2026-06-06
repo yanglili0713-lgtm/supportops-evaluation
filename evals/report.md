@@ -22,6 +22,11 @@
 - Passed: True
 - Failed checks: none
 
+## Hybrid RAG
+
+- Passed: True
+- Failed checks: none
+
 ## Current known limitations
 
 - Evals are small rule checks, not statistically representative benchmarks.
@@ -29,3 +34,4 @@
 - Memory eval covers one synthetic multi-turn case only.
 - RAG grounding checks citations and required docs, not answer faithfulness.
 - Tool recall is approximated through intent routing until Agent loop tool orchestration exists.
+- Hybrid RAG uses an in-memory token vector fallback, not a production embedding model.

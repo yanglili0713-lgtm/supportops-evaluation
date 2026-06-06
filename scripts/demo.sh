@@ -14,11 +14,23 @@ echo "[2/4] Demo RAG query: 上传PDF后检索不到内容怎么办？"
 printf '上传PDF后检索不到内容怎么办？\n' | uv run python -m app.cli
 echo
 
-echo "[3/4] Run eval pipeline"
+echo "[3/5] Demo Hybrid RAG query"
+uv run python - <<'PY'
+from rag.chunker import chunk_documents
+from rag.hybrid_retriever import HybridRetriever
+from rag.ingest import load_markdown_docs
+
+retriever = HybridRetriever(chunk_documents(load_markdown_docs("data/docs")))
+for result in retriever.search("文档导入后答案没有依据", top_k=2):
+    print({"doc_id": result.doc_id, "chunk_id": result.chunk_id, "source": result.source, "score": round(result.score, 4)})
+PY
+echo
+
+echo "[4/5] Run eval pipeline"
 uv run python -m evals.run_all
 echo
 
-echo "[4/4] Show generated eval report"
+echo "[5/5] Show generated eval report"
 if [ -f "evals/report.md" ]; then
   sed -n '1,200p' evals/report.md
 else

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from evals import (
+    hybrid_rag_eval,
     memory_regression_eval,
     rag_grounding_eval,
     router_confusion_eval,
@@ -20,6 +21,7 @@ def run_all() -> dict:
         "router_confusion": router_confusion_eval.run_eval(),
         "memory_regression": memory_regression_eval.run_eval(),
         "rag_grounding": rag_grounding_eval.run_eval(),
+        "hybrid_rag": hybrid_rag_eval.run_eval(),
     }
     REPORT_PATH.write_text(_render_report(results), encoding="utf-8")
     return results
@@ -30,6 +32,7 @@ def _render_report(results: dict) -> str:
     router_confusion = results["router_confusion"]
     memory = results["memory_regression"]
     rag = results["rag_grounding"]
+    hybrid = results["hybrid_rag"]
 
     return "\n".join(
         [
@@ -55,6 +58,11 @@ def _render_report(results: dict) -> str:
             f"- Passed: {rag['passed']}",
             f"- Failed checks: {', '.join(rag['failed_checks']) or 'none'}",
             "",
+            "## Hybrid RAG",
+            "",
+            f"- Passed: {hybrid['passed']}",
+            f"- Failed checks: {', '.join(hybrid['failed_checks']) or 'none'}",
+            "",
             "## Current known limitations",
             "",
             "- Evals are small rule checks, not statistically representative benchmarks.",
@@ -62,6 +70,7 @@ def _render_report(results: dict) -> str:
             "- Memory eval covers one synthetic multi-turn case only.",
             "- RAG grounding checks citations and required docs, not answer faithfulness.",
             "- Tool recall is approximated through intent routing until Agent loop tool orchestration exists.",
+            "- Hybrid RAG uses an in-memory token vector fallback, not a production embedding model.",
             "",
         ]
     )
