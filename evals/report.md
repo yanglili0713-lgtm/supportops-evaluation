@@ -32,6 +32,11 @@
 - Passed: True
 - Failed checks: none
 
+## Agentic retrieval
+
+- Passed: True
+- Failed checks: none
+
 ## Current known limitations
 
 - Evals are small rule checks, not statistically representative benchmarks.
@@ -41,3 +46,4 @@
 - Tool recall is approximated through intent routing until Agent loop tool orchestration exists.
 - Hybrid RAG uses an in-memory token vector fallback, not a production embedding model.
 - GraphRAG uses in-memory seed data; Neo4j schema is provided as a production design artifact.
+- Agentic retrieval is a deterministic local planner, not an LLM policy.

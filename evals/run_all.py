@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from evals import (
+    agentic_retry_eval,
     graphrag_eval,
     hybrid_rag_eval,
     memory_regression_eval,
@@ -24,6 +25,7 @@ def run_all() -> dict:
         "rag_grounding": rag_grounding_eval.run_eval(),
         "hybrid_rag": hybrid_rag_eval.run_eval(),
         "graphrag": graphrag_eval.run_eval(),
+        "agentic_retry": agentic_retry_eval.run_eval(),
     }
     REPORT_PATH.write_text(_render_report(results), encoding="utf-8")
     return results
@@ -36,6 +38,7 @@ def _render_report(results: dict) -> str:
     rag = results["rag_grounding"]
     hybrid = results["hybrid_rag"]
     graphrag = results["graphrag"]
+    agentic = results["agentic_retry"]
 
     return "\n".join(
         [
@@ -71,6 +74,11 @@ def _render_report(results: dict) -> str:
             f"- Passed: {graphrag['passed']}",
             f"- Failed checks: {', '.join(graphrag['failed_checks']) or 'none'}",
             "",
+            "## Agentic retrieval",
+            "",
+            f"- Passed: {agentic['passed']}",
+            f"- Failed checks: {', '.join(agentic['failed_checks']) or 'none'}",
+            "",
             "## Current known limitations",
             "",
             "- Evals are small rule checks, not statistically representative benchmarks.",
@@ -80,6 +88,7 @@ def _render_report(results: dict) -> str:
             "- Tool recall is approximated through intent routing until Agent loop tool orchestration exists.",
             "- Hybrid RAG uses an in-memory token vector fallback, not a production embedding model.",
             "- GraphRAG uses in-memory seed data; Neo4j schema is provided as a production design artifact.",
+            "- Agentic retrieval is a deterministic local planner, not an LLM policy.",
             "",
         ]
     )

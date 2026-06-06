@@ -37,11 +37,21 @@ for item in GraphRetriever().retrieve(entities):
 PY
 echo
 
-echo "[5/6] Run eval pipeline"
+echo "[5/7] Demo Agentic retrieval loop"
+uv run python - <<'PY'
+from app.agent_loop import run_agent
+
+result = run_agent("user_id 是 u_1001，上传 PDF 后检索不到内容，错误码 EMBEDDING_FAILED")
+print(result["final_answer"])
+print({"trace_path": result["trace_path"], "warnings": result["warnings"]})
+PY
+echo
+
+echo "[6/7] Run eval pipeline"
 uv run python -m evals.run_all
 echo
 
-echo "[6/6] Show generated eval report"
+echo "[7/7] Show generated eval report"
 if [ -f "evals/report.md" ]; then
   sed -n '1,200p' evals/report.md
 else

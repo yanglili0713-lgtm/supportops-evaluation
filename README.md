@@ -265,6 +265,27 @@ memory_regression：passed
 rag_grounding：passed
 hybrid_rag：passed
 graphrag：passed
+agentic_retry：passed
+
+Phase 9：Agentic Retrieval Planner
+
+实现内容：
+
+新增 deterministic evidence planner、evidence verifier 和本地 agent loop；
+Agent loop 串联 Router、Memory、Skill Selector、Hybrid RAG、GraphRAG、MCP Mock Tools 和 TraceRecorder；
+支持最小 query rewrite、graph retry、tool empty warning 和 dry-run 写操作保护。
+
+真实问题：
+
+复杂故障排查不能只查一次文档；Agent 需要知道什么时候补查 RAG、什么时候扩展图谱、什么时候查日志、什么时候升级人工。
+
+解决方式：
+
+用 `plan_retrieval` 明确证据步骤，用 `evidence_sufficiency_check` 判断缺口，并用 bounded retry 防止无限循环。
+
+挑战记录：
+
+docs/challenges/phase9_agentic_retrieval_issue.md
 
 Phase 8：GraphRAG
 

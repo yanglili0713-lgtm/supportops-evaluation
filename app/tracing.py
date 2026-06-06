@@ -17,6 +17,7 @@ class TraceRecorder:
     selected_skill: dict | None = None
     case_state: dict | None = None
     retrieved_citations: list[dict] = field(default_factory=list)
+    graph_evidence: list[dict] = field(default_factory=list)
     tool_calls: list[dict] = field(default_factory=list)
     final_answer: str | None = None
     warnings: list[str] = field(default_factory=list)
@@ -32,6 +33,9 @@ class TraceRecorder:
 
     def record_retrieved_citations(self, citations: list[dict]) -> None:
         self.retrieved_citations = citations
+
+    def record_graph_evidence(self, graph_evidence: list[dict]) -> None:
+        self.graph_evidence = graph_evidence
 
     def record_tool_call(self, tool_name: str, args: dict, result: dict) -> None:
         self.tool_calls.append(
