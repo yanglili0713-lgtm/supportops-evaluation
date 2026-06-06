@@ -1,0 +1,13 @@
+{"query": "API Key 失效了，请帮我恢复访问", "intent": "api_key_issue"}
+{"query": "调用接口返回 invalid key，是不是密钥被删除了？", "intent": "api_key_issue"}
+{"query": "上传 PDF 后检索不到内容", "intent": "rag_upload_issue"}
+{"query": "我上传PDF到知识库后搜不到任何段落", "intent": "rag_upload_issue"}
+{"query": "我要申请退款，订单刚支付两天", "intent": "billing_refund"}
+{"query": "这个月账单金额不对，还需要开发票", "intent": "billing_refund"}
+{"query": "团队成员提示权限不足，无法访问项目", "intent": "permission_issue"}
+{"query": "管理员已经邀请我，但还是没有权限查看工单", "intent": "permission_issue"}
+{"query": "登录态过期后一直跳回登录页", "intent": "login_issue"}
+{"query": "用户反馈无法登录，验证码也收不到", "intent": "login_issue"}
+{"query": "部署失败并返回 500，服务启动失败", "intent": "deployment_error"}
+{"query": "请问产品支持哪些文件格式？", "intent": "general_faq"}
+{"query": "今天办公室空调温度是多少？", "intent": "unknown"}
