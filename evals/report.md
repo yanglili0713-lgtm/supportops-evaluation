@@ -27,6 +27,11 @@
 - Passed: True
 - Failed checks: none
 
+## GraphRAG
+
+- Passed: True
+- Failed checks: none
+
 ## Current known limitations
 
 - Evals are small rule checks, not statistically representative benchmarks.
@@ -35,3 +40,4 @@
 - RAG grounding checks citations and required docs, not answer faithfulness.
 - Tool recall is approximated through intent routing until Agent loop tool orchestration exists.
 - Hybrid RAG uses an in-memory token vector fallback, not a production embedding model.
+- GraphRAG uses in-memory seed data; Neo4j schema is provided as a production design artifact.

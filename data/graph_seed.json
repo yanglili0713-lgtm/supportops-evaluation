@@ -1,0 +1,29 @@
+{
+  "nodes": [
+    {"id": "u_1001", "label": "User", "properties": {"user_id": "u_1001", "email": "alice@example.com"}},
+    {"id": "u_1002", "label": "User", "properties": {"user_id": "u_1002", "email": "bob@example.com"}},
+    {"id": "team_01", "label": "Team", "properties": {"team_id": "team_01", "name": "Search Platform"}},
+    {"id": "proj_rag_01", "label": "Project", "properties": {"project_id": "proj_rag_01", "name": "Knowledge Upload"}},
+    {"id": "upload_7001", "label": "UploadJob", "properties": {"upload_job_id": "upload_7001", "file_type": "PDF", "status": "failed"}},
+    {"id": "EMBEDDING_FAILED", "label": "ErrorCode", "properties": {"error_code": "EMBEDDING_FAILED"}},
+    {"id": "PERMISSION_DENIED", "label": "ErrorCode", "properties": {"error_code": "PERMISSION_DENIED"}},
+    {"id": "embedding_service", "label": "Service", "properties": {"service_id": "embedding_service", "name": "Embedding Service"}},
+    {"id": "indexing_service", "label": "Service", "properties": {"service_id": "indexing_service", "name": "Indexing Service"}},
+    {"id": "ticket_3001", "label": "Ticket", "properties": {"ticket_id": "ticket_3001", "summary": "PDF upload failed during embedding"}},
+    {"id": "rag_upload_debug", "label": "Skill", "properties": {"skill_name": "rag_upload_debug"}},
+    {"id": "check_ocr", "label": "SOPStep", "properties": {"step_id": "check_ocr", "description": "Check OCR and embedding job status"}}
+  ],
+  "edges": [
+    {"source": "u_1001", "type": "MEMBER_OF", "target": "team_01"},
+    {"source": "u_1002", "type": "MEMBER_OF", "target": "team_01"},
+    {"source": "team_01", "type": "OWNS", "target": "proj_rag_01"},
+    {"source": "proj_rag_01", "type": "HAS_UPLOAD", "target": "upload_7001"},
+    {"source": "upload_7001", "type": "FAILED_WITH", "target": "EMBEDDING_FAILED"},
+    {"source": "EMBEDDING_FAILED", "type": "RAISED_BY", "target": "embedding_service"},
+    {"source": "embedding_service", "type": "DEPENDS_ON", "target": "indexing_service"},
+    {"source": "ticket_3001", "type": "MENTIONS", "target": "EMBEDDING_FAILED"},
+    {"source": "ticket_3001", "type": "RELATED_TO", "target": "proj_rag_01"},
+    {"source": "rag_upload_debug", "type": "HANDLES", "target": "EMBEDDING_FAILED"},
+    {"source": "rag_upload_debug", "type": "REQUIRES_STEP", "target": "check_ocr"}
+  ]
+}

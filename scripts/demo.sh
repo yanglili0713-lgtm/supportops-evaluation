@@ -26,11 +26,22 @@ for result in retriever.search("文档导入后答案没有依据", top_k=2):
 PY
 echo
 
-echo "[4/5] Run eval pipeline"
+echo "[4/6] Demo GraphRAG evidence"
+uv run python - <<'PY'
+from graph.entity_linker import link_entities
+from graph.graph_retriever import GraphRetriever
+
+entities = link_entities("u_1001 上传 PDF 失败，错误码 EMBEDDING_FAILED")
+for item in GraphRetriever().retrieve(entities):
+    print({"relationships": item["relationships"], "labels": [node["label"] for node in item["path"]]})
+PY
+echo
+
+echo "[5/6] Run eval pipeline"
 uv run python -m evals.run_all
 echo
 
-echo "[5/5] Show generated eval report"
+echo "[6/6] Show generated eval report"
 if [ -f "evals/report.md" ]; then
   sed -n '1,200p' evals/report.md
 else

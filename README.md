@@ -264,6 +264,28 @@ high_confidence_wrong_route：[]
 memory_regression：passed
 rag_grounding：passed
 hybrid_rag：passed
+graphrag：passed
+
+Phase 8：GraphRAG
+
+实现内容：
+
+新增 Neo4j 风格 `graph/schema.cypher`、`data/graph_seed.json`、in-memory graph builder、entity linker、graph retriever 和可选 Neo4j adapter；
+支持从 `user_id` 查 team/project/upload_job；
+支持从 `error_code` 查 service、historical ticket 和相关 skill；
+支持 service dependency 查询。
+
+真实问题：
+
+普通 RAG 能查文档，但无法回答“哪个用户的哪个项目、哪个上传任务、哪个服务和哪个历史工单有关”。
+
+解决方式：
+
+用 GraphRAG 补充 user/project/error/service/ticket 关系链；测试默认使用 in-memory graph，生产可替换 Neo4j。
+
+挑战记录：
+
+docs/challenges/phase8_graphrag_issue.md
 5. 快速运行
 5.1 安装依赖
 uv venv --python 3.12
