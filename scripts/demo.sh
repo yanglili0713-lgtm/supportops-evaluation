@@ -6,15 +6,15 @@ echo "SupportOps Agent Demo"
 echo "=============================================="
 echo
 
-echo "[1/4] Run all tests"
+echo "[1/7] Run all tests"
 uv run pytest -q
 echo
 
-echo "[2/4] Demo RAG query: 上传PDF后检索不到内容怎么办？"
+echo "[2/7] Demo RAG query: 上传PDF后检索不到内容怎么办？"
 printf '上传PDF后检索不到内容怎么办？\n' | uv run python -m app.cli
 echo
 
-echo "[3/5] Demo Hybrid RAG query"
+echo "[3/7] Demo Hybrid RAG query"
 uv run python - <<'PY'
 from rag.chunker import chunk_documents
 from rag.hybrid_retriever import HybridRetriever
@@ -26,7 +26,7 @@ for result in retriever.search("文档导入后答案没有依据", top_k=2):
 PY
 echo
 
-echo "[4/6] Demo GraphRAG evidence"
+echo "[4/7] Demo GraphRAG evidence"
 uv run python - <<'PY'
 from graph.entity_linker import link_entities
 from graph.graph_retriever import GraphRetriever

@@ -1,6 +1,6 @@
-# SupportOps Agent：面向企业支持场景的 RAG + MCP + Skills Agent 工程项目
+# IncidentOps GraphRAG Agent：企业故障工单、日志与知识库根因分析 Agent
 
-SupportOps Agent 是一个面向企业客服与技术支持场景的 Agent 工程项目。
+IncidentOps GraphRAG Agent 是在 SupportOps Agent v1 基础上增量升级的企业故障排查 Agent 工程项目。
 
 项目目标不是做一个普通聊天机器人，而是构建一个具备真实工程约束的企业支持 Agent，用于实践：
 
@@ -12,6 +12,9 @@ SupportOps Agent 是一个面向企业客服与技术支持场景的 Agent 工�
 - Trace 可观测性
 - Eval 失败模式评估
 - Hybrid RAG 融合检索
+- Neo4j 风格 GraphRAG
+- Agentic Retrieval Planner
+- Dify / Coze Workflow 对照
 
 项目刻意围绕真实 Agent 工程问题设计，例如：
 
@@ -40,7 +43,7 @@ SupportOps Agent 是一个面向企业客服与技术支持场景的 Agent 工�
 
 普通 RAG 问答只能解决“查文档”，但不能完成完整业务流程。普通工具调用 Agent 又容易出现工具召回错误、长对话状态丢失、错误路由和越权写操作等问题。
 
-因此，本项目将 RAG、Router、Memory、MCP Mock Tools、Skills、Trace 和 Eval 串成一个小型但真实约束明确的 Agent 工程系统。
+因此，本项目将 Hybrid RAG、GraphRAG、Router、Memory、MCP Mock Tools、Skills、Agentic Planner、Trace 和 Eval 串成一个小型但真实约束明确的 Agent 工程系统。
 
 ---
 
@@ -86,6 +89,11 @@ app/tracing.py
 
 evals/
   评估 Router、Memory、RAG grounding 和高置信错误路由等失败模式。
+graph/
+  提供 Neo4j 风格 schema、in-memory graph、entity linker 和 graph retriever。
+
+workflows/
+  记录 Dify / Coze 低代码 workflow 如何复刻核心流程，以及与 Python 工程版的差异。
 Phase 7：Hybrid RAG
 
 实现内容：
@@ -317,12 +325,22 @@ uv run pytest -q
 printf '上传PDF后检索不到内容怎么办？\n' | uv run python -m app.cli
 5.4 运行 Eval
 uv run python -m evals.run_all
+
+5.5 运行 Demo
+./scripts/demo.sh
+
+5.6 本地 Agentic Loop 示例
+uv run python - <<'PY'
+from app.agent_loop import run_agent
+print(run_agent("user_id 是 u_1001，上传 PDF 后检索不到内容，错误码 EMBEDDING_FAILED")["final_answer"])
+PY
 6. 项目亮点
 不是简单套壳聊天机器人，而是围绕企业支持场景设计的 Agent 工程项目；
 覆盖 RAG、Router、Memory、MCP Mock Tools、Skills、Trace、Eval；
 每个阶段都记录真实问题与解决方案；
 通过 pytest 和 eval 脚本保证结果可回归；
 强调工具调用安全、长对话状态管理、路由可解释性和 RAG grounding；
+支持 Hybrid RAG、GraphRAG、Agentic Retrieval Planner 和 Dify/Coze workflow 对照，便于展示从低代码原型到 Python 工程核心的落地取舍。
 适合展示 Agent 工程能力，而不只是 Prompt/API 调用能力。
 7. 当前局限性
 当前 MCP 仍是本地 mock tool，没有接入真实 MCP 网络协议；
