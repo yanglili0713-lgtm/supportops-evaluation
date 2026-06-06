@@ -1,0 +1,16 @@
+[
+  {
+    "user_id": "u_1001",
+    "email": "alice@example.com",
+    "plan": "pro",
+    "role": "admin",
+    "team_id": "team_01"
+  },
+  {
+    "user_id": "u_1002",
+    "email": "bob@example.com",
+    "plan": "free",
+    "role": "member",
+    "team_id": "team_01"
+  }
+]

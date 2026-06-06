@@ -1,0 +1,14 @@
+[
+  {
+    "user_id": "u_1001",
+    "error_code": "EMBEDDING_FAILED",
+    "message": "Embedding job failed because input PDF contains scanned images without OCR.",
+    "timestamp": "2026-06-06T10:00:00"
+  },
+  {
+    "user_id": "u_1002",
+    "error_code": "PERMISSION_DENIED",
+    "message": "User tried to access project settings without admin role.",
+    "timestamp": "2026-06-06T11:00:00"
+  }
+]

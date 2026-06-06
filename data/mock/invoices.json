@@ -1,0 +1,18 @@
+[
+  {
+    "invoice_id": "inv_9001",
+    "user_id": "u_1001",
+    "status": "paid",
+    "amount": 99,
+    "paid_at": "2026-06-01",
+    "usage_ratio": 0.2
+  },
+  {
+    "invoice_id": "inv_9002",
+    "user_id": "u_1002",
+    "status": "paid",
+    "amount": 19,
+    "paid_at": "2026-05-01",
+    "usage_ratio": 0.9
+  }
+]
