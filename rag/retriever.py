@@ -7,10 +7,16 @@ from dataclasses import dataclass
 from rag.chunker import Chunk
 
 
-_TOKEN_RE = re.compile(r"[a-zA-Z0-9_\u4e00-\u9fff]+")
+_TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[\u4e00-\u9fff]")
 
 
 def tokenize(text: str) -> list[str]:
+    """Tokenize mixed Chinese/English text.
+
+    English and numbers are kept as word-level tokens, while Chinese is split
+    into single-character tokens. This simple strategy is enough for the MVP
+    and avoids failed recall when users omit spaces, e.g. "上传PDF后".
+    """
     return [t.lower() for t in _TOKEN_RE.findall(text)]
 
 

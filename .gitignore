@@ -23,3 +23,6 @@ config.*.toml
 # IDE
 .vscode/
 .idea/
+
+# build metadata
+*.egg-info/
