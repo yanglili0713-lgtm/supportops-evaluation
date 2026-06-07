@@ -41,6 +41,7 @@ def run_eval(
             latency_ms = (time.perf_counter() - started) * 1000
             prediction["latency_ms"] = latency_ms
             case_score = score_case(case, prediction)
+            case_score["latency_ms"] = latency_ms
             scores.append(case_score)
 
             record = {
@@ -60,7 +61,7 @@ def run_eval(
             results.append(record)
             trace_file.write(json.dumps(record, ensure_ascii=False) + "\n")
 
-    summary = aggregate(scores)
+    summary = aggregate(scores, pipeline_name=pipeline_name)
     payload = {
         "pipeline": pipeline_name,
         "bench": str(bench_path),

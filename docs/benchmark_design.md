@@ -71,3 +71,15 @@ Route Accuracy is mainly meaningful for planner/router-style pipelines. It is no
 - Add a stronger no-answer/security-specific subset.
 - Add human review or LLM-as-Judge for answer quality.
 - Map graph evidence to document-level evidence through `source_doc` and `source_span` metadata.
+
+## v2.3 Metric Update: Evidence Precision and Route Applicability
+
+SupportOpsBench now reports both Evidence Recall@5 and Evidence Precision@5.
+
+Evidence Recall@5 answers the question: did the pipeline retrieve the expected evidence documents?
+
+Evidence Precision@5 answers the question: among the retrieved top-5 documents, how many are actually expected evidence documents?
+
+This distinction is important because a retriever can achieve high recall by returning many broadly related documents while still mixing in irrelevant evidence. Precision makes that retrieval noise visible.
+
+Route Accuracy is treated as pipeline-aware. It is mainly applicable to planner/router-style pipelines. For non-routing pipelines such as naive RAG, hybrid RAG, and GraphRAG, route accuracy is reported as N/A rather than 0.0 to avoid misrepresenting retrieval-only systems as failed routers.

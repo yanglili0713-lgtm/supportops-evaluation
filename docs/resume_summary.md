@@ -12,3 +12,9 @@ SupportOps Agent：面向客服/运维工单的多源知识检索与故障诊断
 ## Version B: With Numbers Placeholder
 
 - 在扩展后的 SupportOpsBench 上，对比 Naive RAG、Hybrid RAG、GraphRAG 与 Agentic Planner，在 Evidence Recall@5、Refusal Accuracy、Route Accuracy 和 p95 latency 上形成可复现实验报告。
+
+## v2.3 Resume Note
+
+- Added Evidence Precision@5 alongside Evidence Recall@5 to distinguish successful evidence recall from noisy retrieval.
+- Treated Route Accuracy as planner/router-specific, reporting it as N/A for retrieval-only pipelines to avoid misleading comparisons.
+- Updated the ablation report to compare retrieval quality, refusal behavior, routing behavior, and latency across dummy, naive RAG, hybrid RAG, GraphRAG, and planner pipelines.

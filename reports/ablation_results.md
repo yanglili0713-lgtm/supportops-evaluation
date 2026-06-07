@@ -2,63 +2,59 @@
 
 ## Evaluation Setup
 
-Benchmark: `evals/supportops_bench.yaml`
+This report evaluates the SupportOpsBench seed benchmark across five pipelines:
 
-Pipelines:
+- `dummy`: rule-based sanity check only.
+- `naive`: basic RAG pipeline.
+- `hybrid`: hybrid retrieval pipeline.
+- `graph`: GraphRAG evidence pipeline with document-path mapping.
+- `planner`: agentic retrieval / agent loop pipeline.
 
-- `dummy`: rule baseline for harness sanity checks.
-- `naive`: basic BM25 RAG through `RAGPipeline`.
-- `hybrid`: existing Hybrid RAG retriever.
-- `graph`: existing GraphRAG path retriever.
-- `planner`: existing agent loop with router, skill selection, retrieval planning, tools, verifier, and trace recording.
+The benchmark currently contains 20 seed cases covering FAQ, API key recovery, credential/token handling, permissions, login issues, refund policy, RAG upload troubleshooting, incident diagnosis, multi-document diagnosis, no-answer cases, and security boundary cases.
 
-Commands used:
+## Metrics
 
-```bash
-.venv/bin/python -m evals.supportops_run_eval --pipeline dummy
-.venv/bin/python -m evals.supportops_run_eval --pipeline naive --out reports/eval_naive_results.json --trace-out traces/naive_traces.jsonl
-.venv/bin/python -m evals.supportops_run_eval --pipeline hybrid --out reports/eval_hybrid_results.json --trace-out traces/hybrid_traces.jsonl
-.venv/bin/python -m evals.supportops_run_eval --pipeline graph --out reports/eval_graph_results.json --trace-out traces/graph_traces.jsonl
-.venv/bin/python -m evals.supportops_run_eval --pipeline planner --out reports/eval_planner_results.json --trace-out traces/planner_traces.jsonl
-```
+- **Keyword Hit Rate**: whether the answer contains expected surface keywords.
+- **Evidence Recall@5**: whether the gold evidence documents appear in the top-5 retrieved documents.
+- **Evidence Precision@5**: how concentrated the retrieved evidence is; higher means fewer irrelevant documents are mixed into the top-5.
+- **Refusal Accuracy**: whether no-answer or security-boundary cases are refused correctly.
+- **Route Accuracy**: only applicable to routing/planner-style pipelines. It is reported as `N/A` for naive, hybrid, and graph pipelines.
+- **Latency**: measured in milliseconds.
 
 ## Results Table
 
-| Pipeline | Cases | Keyword Hit | Evidence Recall@5 | Refusal Acc | Route Acc | Avg Latency ms | P95 Latency ms |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| dummy | 20 | 0.8917 | 1.0000 | 1.0000 | 1.0000 | 0.0100 | 0.0137 |
-| naive | 20 | 0.4625 | 0.9750 | 0.8000 | 0.0000 | 0.0860 | 0.0969 |
-| hybrid | 20 | 0.4500 | 0.9750 | 0.8000 | 0.0000 | 0.2795 | 0.4213 |
-| graph | 20 | 0.0000 | 0.9500 | 0.8000 | 0.0000 | 0.1968 | 0.3398 |
-| planner | 20 | 0.0292 | 0.9250 | 0.8000 | 0.9000 | 1.5567 | 3.3453 |
+| Pipeline | Cases | Keyword Hit | Evidence Recall@5 | Evidence Precision@5 | Refusal Acc | Route Acc | Avg Latency ms | P95 Latency ms |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Dummy | 20 | 0.8917 | 1.0000 | 0.8039 | 1.0000 | 1.0000 | 0.0107 | 0.0133 |
+| Naive RAG | 20 | 0.4625 | 0.9750 | 0.2971 | 0.8000 | N/A | 0.0794 | 0.0623 |
+| Hybrid RAG | 20 | 0.4500 | 0.9750 | 0.2971 | 0.8000 | N/A | 0.2541 | 0.3068 |
+| GraphRAG | 20 | 0.0000 | 0.9500 | 0.9118 | 0.8000 | N/A | 0.0751 | 0.1282 |
+| Planner | 20 | 0.0292 | 0.9250 | 0.4118 | 0.8000 | 0.9000 | 1.1403 | 1.5188 |
 
 ## Interpretation
 
-The dummy pipeline is only a sanity check for the benchmark harness. Its high score should not be compared as real model or agent capability.
+The dummy pipeline is a sanity check for the evaluation framework and should not be treated as a real capability baseline.
 
-Naive and hybrid pipelines both show high Evidence Recall@5 on this seed benchmark. This suggests that the document retrieval path is stable for the current small document set.
+Naive and hybrid RAG achieve high Evidence Recall@5, which means the gold documents are usually retrieved. However, their Evidence Precision@5 is lower, indicating that the retrieved evidence set contains additional irrelevant documents. This is useful because recall alone could hide noisy retrieval.
 
-Planner has high Route Accuracy because it uses the project router and agent loop. It is the appropriate pipeline for evaluating route/decision behavior.
+GraphRAG now achieves high Evidence Recall@5 and high Evidence Precision@5 after mapping graph evidence back to real `data/docs/*.md` paths. This does not mean GraphRAG fully solves the task; it means the evaluation can now fairly compare graph evidence at the document level.
 
-Graph now has stronger document-level Evidence Recall@5 after adding a conservative mapping from graph evidence, linked entities, and explicit query signals to existing `data/docs` paths. This does not make graph answers keyword-oriented, and the quality of GraphRAG's document-level evaluation still depends on how reliably graph evidence maps to source documents.
+Planner has high Route Accuracy, which is the correct metric for route/planner behavior. Its latency is higher because it runs routing, planning, tool selection, verification, and trace recording.
 
-Keyword Hit Rate is low for planner and graph because their outputs are not keyword-oriented benchmark answers. Planner currently returns a compact trace-style final answer, and graph returns path evidence summaries.
-
-For the current project stage, Evidence Recall@5, Refusal Accuracy, Route Accuracy, and latency are more useful than reading Keyword Hit Rate alone.
+Keyword Hit Rate should be interpreted carefully. GraphRAG and planner outputs are not optimized to match expected surface keywords, so low keyword scores do not necessarily mean the evidence path is wrong.
 
 ## What This Shows
 
-The project now has a unified evaluation loop: one seed benchmark, shared metrics, five pipeline adapters, JSON result artifacts, and JSONL traces. This makes retrieval, routing, refusal, and latency behavior comparable across pipeline variants.
+The project now has a unified evaluation loop across dummy, naive RAG, hybrid RAG, GraphRAG, and planner pipelines. It reports retrieval recall, retrieval precision, refusal behavior, route behavior, and latency in a reproducible JSON/JSONL format.
 
 ## What It Does Not Show Yet
 
-These results do not prove production or industrial-grade effectiveness. The benchmark has only 20 seed cases, Keyword Hit Rate is a rough proxy, and graph evidence mapping is still rule-based rather than backed by first-class `source_doc` / `source_span` metadata.
+This is still a 20-case seed benchmark. It is not enough to claim production-level quality. The next step is to expand SupportOpsBench to 80-120 cases and add citation precision or human/LLM-assisted answer quality review.
 
 ## Next Actions
 
-- Expand SupportOpsBench to 80-120 cases.
-- Add citation precision and document-level grounding checks.
-- Add no-answer/security stress cases.
-- Add semantic answer quality review through human review or LLM-as-Judge.
-- Map graph paths to `source_doc` and `source_span`.
-- Separate route accuracy reporting for router/planner pipelines from retrieval-only pipelines.
+1. Expand SupportOpsBench from 20 cases to 80-120 cases.
+2. Add citation precision or answer support checking.
+3. Add a no-answer and security-boundary stress subset.
+4. Improve planner answer style so it produces more citation-friendly and keyword-aware responses.
+5. Track latency stability across repeated runs.

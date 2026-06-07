@@ -47,3 +47,13 @@ Phenomenon: metrics can move sharply when a few cases are added or edited.
 Cause: 20 seed cases are enough to validate the evaluation harness, but not enough for robust claims.
 
 Improvement: expand to 80-120 cases and report slices by `task_type`, `split`, and `difficulty`.
+
+## Case 6: High Evidence Recall but Low Evidence Precision
+
+**Observed behavior:** Naive and hybrid RAG can retrieve the expected documents while also returning extra irrelevant documents.
+
+**Why it matters:** Evidence Recall@5 alone can make retrieval look strong even when the top-k evidence set is noisy.
+
+**Current mitigation:** SupportOpsBench now reports Evidence Precision@5 in addition to Evidence Recall@5.
+
+**Next improvement:** Add citation precision and answer-support checking to evaluate whether the final answer is actually grounded in the cited evidence.

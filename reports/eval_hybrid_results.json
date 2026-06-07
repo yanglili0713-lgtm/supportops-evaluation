@@ -5,13 +5,14 @@
     "cases": 20,
     "avg_keyword_hit_rate": 0.45,
     "avg_evidence_recall_at_5": 0.975,
+    "avg_evidence_precision_at_5": 0.2971,
     "avg_refusal_accuracy": 0.8,
-    "avg_route_accuracy": 0.0,
+    "avg_route_accuracy": null,
     "latency_ms": {
-      "avg": 0.2795,
-      "p50": 0.2461,
-      "p95": 0.4213,
-      "max": 0.825
+      "avg": 0.2541,
+      "p50": 0.2226,
+      "p95": 0.3068,
+      "max": 1.0941
     }
   },
   "results": [
@@ -71,14 +72,18 @@
         }
       },
       "score": {
-        "case_id": "Q001",
+        "id": "Q001",
+        "task_type": "api_key_recovery",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 1.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.8250070004578447
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 1.0940720003418392
       },
-      "latency_ms": 0.825,
+      "latency_ms": 1.0941,
       "error": null
     },
     {
@@ -137,14 +142,18 @@
         }
       },
       "score": {
-        "case_id": "Q002",
+        "id": "Q002",
+        "task_type": "credential_or_token",
+        "split": "seen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.25,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.23253000108525157
+        "evidence_precision_at_5": 0.4,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.25079099941649474
       },
-      "latency_ms": 0.2325,
+      "latency_ms": 0.2508,
       "error": null
     },
     {
@@ -203,14 +212,18 @@
         }
       },
       "score": {
-        "case_id": "Q003",
+        "id": "Q003",
+        "task_type": "security_boundary",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 0.0,
-        "latency_ms": 0.3217650009901263
+        "evidence_precision_at_5": null,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.23357100144494325
       },
-      "latency_ms": 0.3218,
+      "latency_ms": 0.2336,
       "error": null
     },
     {
@@ -269,14 +282,18 @@
         }
       },
       "score": {
-        "case_id": "Q004",
+        "id": "Q004",
+        "task_type": "rag_upload_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.75,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.23297699954127893
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.3068389996769838
       },
-      "latency_ms": 0.233,
+      "latency_ms": 0.3068,
       "error": null
     },
     {
@@ -335,14 +352,18 @@
         }
       },
       "score": {
-        "case_id": "Q005",
+        "id": "Q005",
+        "task_type": "incident_diagnosis",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.5,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.21188299979257863
+        "evidence_precision_at_5": 0.4,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.2097020005749073
       },
-      "latency_ms": 0.2119,
+      "latency_ms": 0.2097,
       "error": null
     },
     {
@@ -393,14 +414,18 @@
         }
       },
       "score": {
-        "case_id": "Q006",
+        "id": "Q006",
+        "task_type": "rag_upload_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.3333333333333333,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.2482050003891345
+        "evidence_precision_at_5": 0.25,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.19894800061592832
       },
-      "latency_ms": 0.2482,
+      "latency_ms": 0.1989,
       "error": null
     },
     {
@@ -459,14 +484,18 @@
         }
       },
       "score": {
-        "case_id": "Q007",
+        "id": "Q007",
+        "task_type": "multi_doc_diagnosis",
+        "split": "unseen",
+        "difficulty": "hard",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.24902699988160748
+        "evidence_precision_at_5": 0.4,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.22771900148654822
       },
-      "latency_ms": 0.249,
+      "latency_ms": 0.2277,
       "error": null
     },
     {
@@ -525,14 +554,18 @@
         }
       },
       "score": {
-        "case_id": "Q008",
+        "id": "Q008",
+        "task_type": "refund_policy",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 1.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.2165909991163062
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.2335519984626444
       },
-      "latency_ms": 0.2166,
+      "latency_ms": 0.2336,
       "error": null
     },
     {
@@ -591,14 +624,18 @@
         }
       },
       "score": {
-        "case_id": "Q009",
+        "id": "Q009",
+        "task_type": "refund_policy",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.6666666666666666,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.2052569998340914
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.20846900042670313
       },
-      "latency_ms": 0.2053,
+      "latency_ms": 0.2085,
       "error": null
     },
     {
@@ -657,14 +694,18 @@
         }
       },
       "score": {
-        "case_id": "Q010",
+        "id": "Q010",
+        "task_type": "security_boundary",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 0.0,
-        "latency_ms": 0.1978719992621336
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.21512999956030399
       },
-      "latency_ms": 0.1979,
+      "latency_ms": 0.2151,
       "error": null
     },
     {
@@ -723,14 +764,18 @@
         }
       },
       "score": {
-        "case_id": "Q011",
+        "id": "Q011",
+        "task_type": "permission_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.75,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.3281110002717469
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.23398700068355538
       },
-      "latency_ms": 0.3281,
+      "latency_ms": 0.234,
       "error": null
     },
     {
@@ -789,14 +834,18 @@
         }
       },
       "score": {
-        "case_id": "Q012",
+        "id": "Q012",
+        "task_type": "faq",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 1.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.3408190004847711
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.2699249998840969
       },
-      "latency_ms": 0.3408,
+      "latency_ms": 0.2699,
       "error": null
     },
     {
@@ -855,14 +904,18 @@
         }
       },
       "score": {
-        "case_id": "Q013",
+        "id": "Q013",
+        "task_type": "login_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 1.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.4000649987574434
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.22679500034428202
       },
-      "latency_ms": 0.4001,
+      "latency_ms": 0.2268,
       "error": null
     },
     {
@@ -921,14 +974,18 @@
         }
       },
       "score": {
-        "case_id": "Q014",
+        "id": "Q014",
+        "task_type": "incident_diagnosis",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.3333333333333333,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.3756480000447482
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.22258399985730648
       },
-      "latency_ms": 0.3756,
+      "latency_ms": 0.2226,
       "error": null
     },
     {
@@ -955,14 +1012,18 @@
         }
       },
       "score": {
-        "case_id": "Q015",
+        "id": "Q015",
+        "task_type": "permission_issue",
+        "split": "seen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 0.5,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.09751899960974697
+        "evidence_precision_at_5": 1.0,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.08694600001035724
       },
-      "latency_ms": 0.0975,
+      "latency_ms": 0.0869,
       "error": null
     },
     {
@@ -997,14 +1058,18 @@
         }
       },
       "score": {
-        "case_id": "Q016",
+        "id": "Q016",
+        "task_type": "faq",
+        "split": "no_answer",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 0.0,
-        "latency_ms": 0.13663100071426015
+        "evidence_precision_at_5": null,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.1359249999950407
       },
-      "latency_ms": 0.1366,
+      "latency_ms": 0.1359,
       "error": null
     },
     {
@@ -1031,14 +1096,18 @@
         }
       },
       "score": {
-        "case_id": "Q017",
+        "id": "Q017",
+        "task_type": "no_answer",
+        "split": "no_answer",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 0.0,
-        "latency_ms": 0.09193000005325302
+        "evidence_precision_at_5": null,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.09000300087791402
       },
-      "latency_ms": 0.0919,
+      "latency_ms": 0.09,
       "error": null
     },
     {
@@ -1097,14 +1166,18 @@
         }
       },
       "score": {
-        "case_id": "Q018",
+        "id": "Q018",
+        "task_type": "tool_routing",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.3333333333333333,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.26433200036990456
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.21519599977182224
       },
-      "latency_ms": 0.2643,
+      "latency_ms": 0.2152,
       "error": null
     },
     {
@@ -1163,14 +1236,18 @@
         }
       },
       "score": {
-        "case_id": "Q019",
+        "id": "Q019",
+        "task_type": "tool_routing",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.3333333333333333,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.2439479994791327
+        "evidence_precision_at_5": 0.2,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.20297499941079877
       },
-      "latency_ms": 0.2439,
+      "latency_ms": 0.203,
       "error": null
     },
     {
@@ -1229,14 +1306,18 @@
         }
       },
       "score": {
-        "case_id": "Q020",
+        "id": "Q020",
+        "task_type": "multi_doc_diagnosis",
+        "split": "unseen",
+        "difficulty": "hard",
         "keyword_hit_rate": 0.75,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 0.3704770006152103
+        "evidence_precision_at_5": 0.4,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.21871999888389837
       },
-      "latency_ms": 0.3705,
+      "latency_ms": 0.2187,
       "error": null
     }
   ]

@@ -5,13 +5,14 @@
     "cases": 20,
     "avg_keyword_hit_rate": 0.0292,
     "avg_evidence_recall_at_5": 0.925,
+    "avg_evidence_precision_at_5": 0.4118,
     "avg_refusal_accuracy": 0.8,
     "avg_route_accuracy": 0.9,
     "latency_ms": {
-      "avg": 1.5567,
-      "p50": 1.2017,
-      "p95": 3.3453,
-      "max": 7.0267
+      "avg": 1.1403,
+      "p50": 1.1015,
+      "p95": 1.5188,
+      "max": 2.2667
     }
   },
   "results": [
@@ -121,18 +122,22 @@
             "reason": "planned evidence for intent=api_key_issue, skill=api_key_recovery",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/21c57fea0d034e6e95084e40e3031f01.json"
+          "trace_path": "traces/runs/6fa653e892e44f71bccd30ecdb65a5ba.json"
         }
       },
       "score": {
-        "case_id": "Q001",
+        "id": "Q001",
+        "task_type": "api_key_recovery",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 7.026693998341216
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.518827000836609
       },
-      "latency_ms": 7.0267,
+      "latency_ms": 1.5188,
       "error": null
     },
     {
@@ -250,18 +255,22 @@
             "reason": "planned evidence for intent=unknown, skill=escalation",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/e8b7e01f32e54ecc8e1043b08795bc60.json"
+          "trace_path": "traces/runs/6f4170616e124eaeb7026afd2d292e3d.json"
         }
       },
       "score": {
-        "case_id": "Q002",
+        "id": "Q002",
+        "task_type": "credential_or_token",
+        "split": "seen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.25,
         "evidence_recall_at_5": 0.5,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 3.151524999339017
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 1.4200690002326155
       },
-      "latency_ms": 3.1515,
+      "latency_ms": 1.4201,
       "error": null
     },
     {
@@ -369,18 +378,22 @@
             "reason": "planned evidence for intent=api_key_issue, skill=api_key_recovery",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/09ee184592fc45bb918622d1db1ad55a.json"
+          "trace_path": "traces/runs/f605713ac84e4f51979fa82cfc323272.json"
         }
       },
       "score": {
-        "case_id": "Q003",
+        "id": "Q003",
+        "task_type": "security_boundary",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 1.0,
-        "latency_ms": 1.246257999810041
+        "evidence_precision_at_5": null,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.251594998393557
       },
-      "latency_ms": 1.2463,
+      "latency_ms": 1.2516,
       "error": null
     },
     {
@@ -491,18 +504,22 @@
             "reason": "planned evidence for intent=rag_upload_issue, skill=rag_upload_debug",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/50500b6aab684b9bb77c036d6dcaf138.json"
+          "trace_path": "traces/runs/3adeef9bb14c4d89ac30005f6fd6f3ab.json"
         }
       },
       "score": {
-        "case_id": "Q004",
+        "id": "Q004",
+        "task_type": "rag_upload_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.221069000166608
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.1014669998985482
       },
-      "latency_ms": 1.2211,
+      "latency_ms": 1.1015,
       "error": null
     },
     {
@@ -608,18 +625,22 @@
             "reason": "planned evidence for intent=rag_upload_issue, skill=rag_upload_debug",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/445a48fed4f54870b1c47ec05246298e.json"
+          "trace_path": "traces/runs/fe370705a3a34fc7adc193fbc1c2ab04.json"
         }
       },
       "score": {
-        "case_id": "Q005",
+        "id": "Q005",
+        "task_type": "incident_diagnosis",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.2599410001712386
+        "evidence_precision_at_5": 0.6666666666666666,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.1052290010411525
       },
-      "latency_ms": 1.2599,
+      "latency_ms": 1.1052,
       "error": null
     },
     {
@@ -726,18 +747,22 @@
             "reason": "planned evidence for intent=rag_upload_issue, skill=rag_upload_debug",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/6720b87550474ac6ae10657246e7aa9a.json"
+          "trace_path": "traces/runs/4addd3b154dd47a2973e07f57daaf228.json"
         }
       },
       "score": {
-        "case_id": "Q006",
+        "id": "Q006",
+        "task_type": "rag_upload_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.0587610013317317
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.000874999590451
       },
-      "latency_ms": 1.0588,
+      "latency_ms": 1.0009,
       "error": null
     },
     {
@@ -910,18 +935,22 @@
             "reason": "planned evidence for intent=rag_upload_issue, skill=rag_upload_debug",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/83a175268c744fdeba6686e89b1d3d05.json"
+          "trace_path": "traces/runs/82f62da5e7be4a93b487332727206ea6.json"
         }
       },
       "score": {
-        "case_id": "Q007",
+        "id": "Q007",
+        "task_type": "multi_doc_diagnosis",
+        "split": "unseen",
+        "difficulty": "hard",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 0.5,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.7199519988935208
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.109446000555181
       },
-      "latency_ms": 1.72,
+      "latency_ms": 1.1094,
       "error": null
     },
     {
@@ -1025,18 +1054,22 @@
             "reason": "planned evidence for intent=billing_refund, skill=refund_policy",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/efade6e3b13c4828be6a66f57f29d903.json"
+          "trace_path": "traces/runs/26ddf376421b431887087f9101771840.json"
         }
       },
       "score": {
-        "case_id": "Q008",
+        "id": "Q008",
+        "task_type": "refund_policy",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.2644050002563745
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 0.972652000200469
       },
-      "latency_ms": 1.2644,
+      "latency_ms": 0.9727,
       "error": null
     },
     {
@@ -1140,18 +1173,22 @@
             "reason": "planned evidence for intent=billing_refund, skill=refund_policy",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/316e2a1db2ed46fbb0fe42718c03d29f.json"
+          "trace_path": "traces/runs/c01d9b564e1e4c65b38edb061762dfe8.json"
         }
       },
       "score": {
-        "case_id": "Q009",
+        "id": "Q009",
+        "task_type": "refund_policy",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.216587001181324
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 2.266712999698939
       },
-      "latency_ms": 1.2166,
+      "latency_ms": 2.2667,
       "error": null
     },
     {
@@ -1255,18 +1292,22 @@
             "reason": "planned evidence for intent=billing_refund, skill=refund_policy",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/1d8e23f9b0fb48278f46efae494c771f.json"
+          "trace_path": "traces/runs/1c0edf54616e4535a79bb0fdbd3cdcb2.json"
         }
       },
       "score": {
-        "case_id": "Q010",
+        "id": "Q010",
+        "task_type": "security_boundary",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 1.0,
-        "latency_ms": 1.0693959993659519
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.1769080010708421
       },
-      "latency_ms": 1.0694,
+      "latency_ms": 1.1769,
       "error": null
     },
     {
@@ -1374,18 +1415,22 @@
             "reason": "planned evidence for intent=permission_issue, skill=escalation",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/284afc281182479aaef310e9cd160467.json"
+          "trace_path": "traces/runs/1febb7722b67401baa12125f73c40da1.json"
         }
       },
       "score": {
-        "case_id": "Q011",
+        "id": "Q011",
+        "task_type": "permission_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.186866000352893
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.1644160003925208
       },
-      "latency_ms": 1.1869,
+      "latency_ms": 1.1644,
       "error": null
     },
     {
@@ -1492,18 +1537,22 @@
             "reason": "planned evidence for intent=permission_issue, skill=escalation",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/a34990f0d0804eb8b6a82ecf11e8eb17.json"
+          "trace_path": "traces/runs/f7c9cd3a708e49a2bde9183945853dde.json"
         }
       },
       "score": {
-        "case_id": "Q012",
+        "id": "Q012",
+        "task_type": "faq",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.4582849998987513
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.2332139995123725
       },
-      "latency_ms": 1.4583,
+      "latency_ms": 1.2332,
       "error": null
     },
     {
@@ -1603,18 +1652,22 @@
             "reason": "planned evidence for intent=login_issue, skill=login_troubleshooting",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/8a1f31fd947046a882e1da3ff5f7d6d6.json"
+          "trace_path": "traces/runs/d61d5bb77e754480b4504227b3ca0eb9.json"
         }
       },
       "score": {
-        "case_id": "Q013",
+        "id": "Q013",
+        "task_type": "login_issue",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.1113790005765622
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 0.9361449992866255
       },
-      "latency_ms": 1.1114,
+      "latency_ms": 0.9361,
       "error": null
     },
     {
@@ -1734,18 +1787,22 @@
             "reason": "planned evidence for intent=billing_refund, skill=refund_policy",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/1e1c764c996e4b26869131cbbdc5cda1.json"
+          "trace_path": "traces/runs/14e46af788714853b59499babb4630b0.json"
         }
       },
       "score": {
-        "case_id": "Q014",
+        "id": "Q014",
+        "task_type": "incident_diagnosis",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.0777820007206174
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.0534060002100887
       },
-      "latency_ms": 1.0778,
+      "latency_ms": 1.0534,
       "error": null
     },
     {
@@ -1856,18 +1913,22 @@
             "reason": "planned evidence for intent=unknown, skill=escalation",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/5be553da866744ed8fa56a33a3a95df5.json"
+          "trace_path": "traces/runs/210f5fb52fe74e01a9571ff7b90d4bc4.json"
         }
       },
       "score": {
-        "case_id": "Q015",
+        "id": "Q015",
+        "task_type": "permission_issue",
+        "split": "seen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 0.5,
-        "refusal_correct": true,
-        "route_correct": 0.0,
-        "latency_ms": 1.0110880011779955
+        "evidence_precision_at_5": 1.0,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 0.0,
+        "latency_ms": 0.8543059993826319
       },
-      "latency_ms": 1.0111,
+      "latency_ms": 0.8543,
       "error": null
     },
     {
@@ -1963,18 +2024,22 @@
             "reason": "planned evidence for intent=general_faq, skill=escalation",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/3efc80e720914f2cb84c599dfebde98d.json"
+          "trace_path": "traces/runs/3fafd3363f3d406fb091a5cb04efe79c.json"
         }
       },
       "score": {
-        "case_id": "Q016",
+        "id": "Q016",
+        "task_type": "faq",
+        "split": "no_answer",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 1.0,
-        "latency_ms": 0.9671690004324773
+        "evidence_precision_at_5": null,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 0.8763149999140296
       },
-      "latency_ms": 0.9672,
+      "latency_ms": 0.8763,
       "error": null
     },
     {
@@ -2062,18 +2127,22 @@
             "reason": "planned evidence for intent=unknown, skill=escalation",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/5984e8e7d7f3464d983566d518c475c3.json"
+          "trace_path": "traces/runs/f523c172921e4e5ba9211b5391ebffbb.json"
         }
       },
       "score": {
-        "case_id": "Q017",
+        "id": "Q017",
+        "task_type": "no_answer",
+        "split": "no_answer",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": false,
-        "route_correct": 1.0,
-        "latency_ms": 0.8954700006142957
+        "evidence_precision_at_5": null,
+        "refusal_accuracy": 0.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 0.7705290008743759
       },
-      "latency_ms": 0.8955,
+      "latency_ms": 0.7705,
       "error": null
     },
     {
@@ -2155,18 +2224,22 @@
             "reason": "planned evidence for intent=login_issue, skill=login_troubleshooting",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/b395c1e2b0e94f4383610a1ce4a70563.json"
+          "trace_path": "traces/runs/763a9cac34004a7ca36ee80fe9f7d3b5.json"
         }
       },
       "score": {
-        "case_id": "Q018",
+        "id": "Q018",
+        "task_type": "tool_routing",
+        "split": "unseen",
+        "difficulty": "medium",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 0.8820109997031977
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 0.9687920010037487
       },
-      "latency_ms": 0.882,
+      "latency_ms": 0.9688,
       "error": null
     },
     {
@@ -2271,18 +2344,22 @@
             "reason": "planned evidence for intent=billing_refund, skill=refund_policy",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/bbfcd87bbf7241498b919311838467d7.json"
+          "trace_path": "traces/runs/610bb66640324c0aad27a7bc4fcaf912.json"
         }
       },
       "score": {
-        "case_id": "Q019",
+        "id": "Q019",
+        "task_type": "tool_routing",
+        "split": "seen",
+        "difficulty": "easy",
         "keyword_hit_rate": 0.3333333333333333,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.0176080013479805
+        "evidence_precision_at_5": 0.3333333333333333,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 0.9828390011534793
       },
-      "latency_ms": 1.0176,
+      "latency_ms": 0.9828,
       "error": null
     },
     {
@@ -2391,18 +2468,22 @@
             "reason": "planned evidence for intent=api_key_issue, skill=api_key_recovery",
             "max_retries": 2
           },
-          "trace_path": "traces/runs/de1e78cbe1f4487ea3e45413eaa6da96.json"
+          "trace_path": "traces/runs/c39063be1b4a428889d1fc0080751ab8.json"
         }
       },
       "score": {
-        "case_id": "Q020",
+        "id": "Q020",
+        "task_type": "multi_doc_diagnosis",
+        "split": "unseen",
+        "difficulty": "hard",
         "keyword_hit_rate": 0.0,
         "evidence_recall_at_5": 1.0,
-        "refusal_correct": true,
-        "route_correct": 1.0,
-        "latency_ms": 1.2915019997308264
+        "evidence_precision_at_5": 0.6666666666666666,
+        "refusal_accuracy": 1.0,
+        "route_accuracy": 1.0,
+        "latency_ms": 1.0423080002510687
       },
-      "latency_ms": 1.2915,
+      "latency_ms": 1.0423,
       "error": null
     }
   ]
