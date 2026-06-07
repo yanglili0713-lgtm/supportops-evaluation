@@ -28,6 +28,60 @@ DOC_KEYWORDS = {
     "data/docs/refund_policy.md": ["退款", "账单", "invoice", "paid", "发票", "扣费", "80%", "企业套餐"],
 }
 
+GRAPH_DOC_SIGNALS = [
+    (
+        "data/docs/api_key_guide.md",
+        ["api key", "apikey", "api_key", "api_key_invalid", "credential", "token", "密钥"],
+    ),
+    (
+        "data/docs/rag_upload_troubleshooting.md",
+        [
+            "embedding_failed",
+            "vector_write_failed",
+            "rag_upload_failed",
+            "upload",
+            "uploadjob",
+            "pdf",
+            "ocr",
+            "embedding service",
+            "embedding_service",
+            "rag_upload_debug",
+            "knowledge upload",
+        ],
+    ),
+    (
+        "data/docs/permission_guide.md",
+        ["permission", "permission_denied", "403", "access", "owner", "admin", "member", "权限"],
+    ),
+    (
+        "data/docs/refund_policy.md",
+        ["refund", "billing", "invoice", "paid", "退款", "账单", "发票"],
+    ),
+    (
+        "data/docs/error_code_manual.md",
+        [
+            "error_code",
+            "auth_expired",
+            "api_key_invalid",
+            "embedding_failed",
+            "vector_write_failed",
+            "permission_denied",
+            "billing_required",
+            "401",
+            "500",
+            "timeout",
+        ],
+    ),
+]
+
+DOC_ID_TO_PATH = {
+    "api_key_guide": "data/docs/api_key_guide.md",
+    "error_code_manual": "data/docs/error_code_manual.md",
+    "permission_guide": "data/docs/permission_guide.md",
+    "rag_upload_troubleshooting": "data/docs/rag_upload_troubleshooting.md",
+    "refund_policy": "data/docs/refund_policy.md",
+}
+
 
 def run_pipeline(pipeline_name: str, query: str) -> dict:
     if pipeline_name == "dummy":
@@ -89,14 +143,17 @@ def _run_hybrid(query: str) -> dict:
 def _run_graph(query: str) -> dict:
     entities = link_entities(query)
     graph_evidence = GraphRetriever().retrieve(entities)
+    mapped_docs = _graph_evidence_to_docs(graph_evidence, entities=entities, query=query)
     return {
         "answer": _answer_from_graph(graph_evidence),
-        "retrieved_docs": [],
+        "retrieved_docs": mapped_docs,
         "route": "graph",
         "raw": {
             "pipeline": "graph",
             "entities": entities,
             "graph_evidence": graph_evidence,
+            "mapped_docs": mapped_docs,
+            "mapping_reason": _graph_mapping_reason(graph_evidence, mapped_docs),
         },
     }
 
@@ -174,6 +231,78 @@ def _answer_from_graph(graph_evidence: list[dict]) -> str:
         relationships = item.get("relationships", [])
         summaries.append(" -> ".join(labels + relationships))
     return f"GraphRAG found {len(graph_evidence)} graph paths: " + " | ".join(summaries)
+
+
+def _graph_evidence_to_docs(
+    graph_evidence: object,
+    entities: dict[str, str] | None = None,
+    query: str = "",
+) -> list[str]:
+    docs = []
+    text_parts = [query]
+    entities = entities or {}
+    for key, value in entities.items():
+        text_parts.extend([key, value])
+
+    for item in graph_evidence if isinstance(graph_evidence, list) else []:
+        for relationship in item.get("relationships", []):
+            text_parts.append(str(relationship))
+        for node in item.get("path", []):
+            text_parts.extend([str(node.get("id", "")), str(node.get("label", ""))])
+            properties = node.get("properties", {})
+            if isinstance(properties, dict):
+                _append_direct_doc_paths(docs, properties)
+                text_parts.extend(str(value) for value in properties.values())
+
+    normalized = " ".join(text_parts).lower()
+    for doc_path, signals in GRAPH_DOC_SIGNALS:
+        if any(signal.lower() in normalized for signal in signals):
+            _append_existing_doc(docs, doc_path)
+    return docs
+
+
+def _append_direct_doc_paths(docs: list[str], properties: dict) -> None:
+    for key in ("source", "source_doc", "doc_path"):
+        value = properties.get(key)
+        if isinstance(value, str):
+            _append_existing_doc(docs, value)
+
+    doc_id = properties.get("doc_id")
+    if isinstance(doc_id, str):
+        _append_existing_doc(docs, DOC_ID_TO_PATH.get(doc_id, doc_id))
+
+    skill_name = properties.get("skill_name")
+    if skill_name == "rag_upload_debug":
+        _append_existing_doc(docs, "data/docs/rag_upload_troubleshooting.md")
+
+    error_code = properties.get("error_code")
+    if isinstance(error_code, str):
+        _append_existing_doc(docs, "data/docs/error_code_manual.md")
+        if error_code in {"EMBEDDING_FAILED", "VECTOR_WRITE_FAILED"}:
+            _append_existing_doc(docs, "data/docs/rag_upload_troubleshooting.md")
+        if error_code == "PERMISSION_DENIED":
+            _append_existing_doc(docs, "data/docs/permission_guide.md")
+        if error_code in {"API_KEY_INVALID", "AUTH_EXPIRED", "BILLING_REQUIRED"}:
+            _append_existing_doc(docs, "data/docs/error_code_manual.md")
+
+
+def _append_existing_doc(docs: list[str], doc_path: str | None) -> None:
+    if not doc_path:
+        return
+    if doc_path in DOC_ID_TO_PATH:
+        doc_path = DOC_ID_TO_PATH[doc_path]
+    if Path(doc_path).exists() and doc_path.startswith("data/docs/") and doc_path not in docs:
+        docs.append(doc_path)
+
+
+def _graph_mapping_reason(graph_evidence: list[dict], mapped_docs: list[str]) -> str:
+    if mapped_docs and graph_evidence:
+        return "mapped from graph evidence, linked entities, and query signals"
+    if mapped_docs:
+        return "mapped from linked entities and query signals; no graph paths were returned"
+    if graph_evidence:
+        return "graph paths returned but no reliable document mapping was found"
+    return "no graph paths or reliable document mapping were found"
 
 
 def _route(query: str) -> str:

@@ -29,8 +29,8 @@ Commands used:
 | dummy | 20 | 0.8917 | 1.0000 | 1.0000 | 1.0000 | 0.0100 | 0.0137 |
 | naive | 20 | 0.4625 | 0.9750 | 0.8000 | 0.0000 | 0.0860 | 0.0969 |
 | hybrid | 20 | 0.4500 | 0.9750 | 0.8000 | 0.0000 | 0.2795 | 0.4213 |
-| graph | 20 | 0.0000 | 0.1500 | 0.8000 | 0.0000 | 0.0595 | 0.0897 |
-| planner | 20 | 0.0292 | 0.9250 | 0.8000 | 0.9000 | 1.3589 | 2.1562 |
+| graph | 20 | 0.0000 | 0.9500 | 0.8000 | 0.0000 | 0.1968 | 0.3398 |
+| planner | 20 | 0.0292 | 0.9250 | 0.8000 | 0.9000 | 1.5567 | 3.3453 |
 
 ## Interpretation
 
@@ -40,7 +40,7 @@ Naive and hybrid pipelines both show high Evidence Recall@5 on this seed benchma
 
 Planner has high Route Accuracy because it uses the project router and agent loop. It is the appropriate pipeline for evaluating route/decision behavior.
 
-Graph has low document-level Evidence Recall@5 because graph paths are not fully mapped back to `data/docs` paths. This should not be read as "GraphRAG does not work"; it means the current graph evidence format is not aligned with the document-level recall metric.
+Graph now has stronger document-level Evidence Recall@5 after adding a conservative mapping from graph evidence, linked entities, and explicit query signals to existing `data/docs` paths. This does not make graph answers keyword-oriented, and the quality of GraphRAG's document-level evaluation still depends on how reliably graph evidence maps to source documents.
 
 Keyword Hit Rate is low for planner and graph because their outputs are not keyword-oriented benchmark answers. Planner currently returns a compact trace-style final answer, and graph returns path evidence summaries.
 
@@ -52,7 +52,7 @@ The project now has a unified evaluation loop: one seed benchmark, shared metric
 
 ## What It Does Not Show Yet
 
-These results do not prove production or industrial-grade effectiveness. The benchmark has only 20 seed cases, Keyword Hit Rate is a rough proxy, and graph evidence has not been normalized to document-level evidence.
+These results do not prove production or industrial-grade effectiveness. The benchmark has only 20 seed cases, Keyword Hit Rate is a rough proxy, and graph evidence mapping is still rule-based rather than backed by first-class `source_doc` / `source_span` metadata.
 
 ## Next Actions
 

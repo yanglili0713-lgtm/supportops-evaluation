@@ -8,11 +8,11 @@ Cause: their outputs are not designed to maximize `expected_keywords`. Planner c
 
 Improvement: add a semantic judge or human review so valid non-keyword answers are not over-penalized.
 
-## Case 2: Graph Evidence Is Not Mapped Back to Document Paths
+## Case 2: Graph Evidence Mapping Depends on Explicit Source Signals
 
-Phenomenon: graph Evidence Recall@5 is low.
+Phenomenon: graph Evidence Recall@5 improved after mapping graph evidence and query/entity signals to `data/docs/*.md`, but this remains dependent on explicit signals such as `error_code`, `skill_name`, `service_id`, upload/PDF terms, API key terms, and permission/billing terms.
 
-Cause: graph paths are returned as structured node/relationship evidence, but they are not fully mapped back to `data/docs/*.md` paths.
+Cause: graph paths are structured node/relationship evidence. The current adapter can map clear signals to document paths, but graph nodes do not yet carry first-class `source_doc` and `source_span` metadata.
 
 Improvement: add `source_doc` and `source_span` metadata to graph nodes or graph retrieval evidence.
 
