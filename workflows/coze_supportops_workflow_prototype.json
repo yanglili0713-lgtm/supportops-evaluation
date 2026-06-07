@@ -1,0 +1,77 @@
+{
+  "name": "SupportOps Coze-style Workflow Prototype",
+  "type": "prototype",
+  "schema_note": "This is a project-local prototype schema for explaining a Coze-style workflow. It is not an official Coze export format.",
+  "nodes": [
+    {
+      "id": "user_input",
+      "type": "user_input",
+      "description": "Receive the support ticket text or incident question from the user."
+    },
+    {
+      "id": "bot_skill_workflow",
+      "type": "bot_skill_workflow",
+      "description": "Select the support workflow or skill based on the predicted intent."
+    },
+    {
+      "id": "knowledge_node",
+      "type": "knowledge_node",
+      "description": "Retrieve relevant FAQ, SOP, troubleshooting, policy, and error-code documents."
+    },
+    {
+      "id": "graph_evidence_node",
+      "type": "workflow_node",
+      "description": "Represent graph evidence lookup for relationships among users, teams, projects, tickets, services, error codes, and documents."
+    },
+    {
+      "id": "plugin_tool_node",
+      "type": "plugin_tool_node",
+      "description": "Represent mocked plugin or tool calls such as search_error_logs, get_invoice, or create_ticket."
+    },
+    {
+      "id": "condition_branch",
+      "type": "condition_branch",
+      "description": "Branch to answer, refusal, or escalation according to evidence sufficiency and safety boundary checks."
+    },
+    {
+      "id": "final_response",
+      "type": "final_response",
+      "description": "Return a grounded support answer with citations, or a refusal/escalation response."
+    },
+    {
+      "id": "trace_log",
+      "type": "trace_log",
+      "description": "Log the selected route, retrieved documents, graph evidence, mock tool call, decision, and response."
+    }
+  ],
+  "edges": [
+    {
+      "from": "user_input",
+      "to": "bot_skill_workflow"
+    },
+    {
+      "from": "bot_skill_workflow",
+      "to": "knowledge_node"
+    },
+    {
+      "from": "knowledge_node",
+      "to": "graph_evidence_node"
+    },
+    {
+      "from": "graph_evidence_node",
+      "to": "plugin_tool_node"
+    },
+    {
+      "from": "plugin_tool_node",
+      "to": "condition_branch"
+    },
+    {
+      "from": "condition_branch",
+      "to": "final_response"
+    },
+    {
+      "from": "final_response",
+      "to": "trace_log"
+    }
+  ]
+}

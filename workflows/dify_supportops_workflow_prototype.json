@@ -1,0 +1,77 @@
+{
+  "name": "SupportOps Dify-style Workflow Prototype",
+  "type": "prototype",
+  "schema_note": "This is a project-local prototype schema for explaining a Dify-style workflow. It is not an official Dify export format.",
+  "nodes": [
+    {
+      "id": "input",
+      "type": "start",
+      "description": "Collect the user's support or incident question."
+    },
+    {
+      "id": "router",
+      "type": "llm_router",
+      "description": "Classify the request into a support intent such as login_issue, billing_refund, api_key_issue, rag_upload_issue, permission_issue, deployment_error, general_faq, or unknown."
+    },
+    {
+      "id": "knowledge_retrieval",
+      "type": "knowledge",
+      "description": "Retrieve supporting Markdown documents from the SupportOps knowledge base."
+    },
+    {
+      "id": "graph_lookup",
+      "type": "custom",
+      "description": "Look up related graph evidence such as user, team, project, ticket, service, error code, and document mappings."
+    },
+    {
+      "id": "mock_tool",
+      "type": "http_tool",
+      "description": "Represent mocked enterprise tool calls such as invoice lookup, log search, or ticket creation."
+    },
+    {
+      "id": "evidence_check",
+      "type": "condition",
+      "description": "Check whether evidence is sufficient and whether the request should be refused or escalated."
+    },
+    {
+      "id": "answer_or_refusal",
+      "type": "answer",
+      "description": "Return a cited answer, a safe refusal, or an escalation response."
+    },
+    {
+      "id": "trace",
+      "type": "logging",
+      "description": "Record route, retrieved documents, graph evidence, mock tool choice, evidence decision, and final output."
+    }
+  ],
+  "edges": [
+    {
+      "from": "input",
+      "to": "router"
+    },
+    {
+      "from": "router",
+      "to": "knowledge_retrieval"
+    },
+    {
+      "from": "knowledge_retrieval",
+      "to": "graph_lookup"
+    },
+    {
+      "from": "graph_lookup",
+      "to": "mock_tool"
+    },
+    {
+      "from": "mock_tool",
+      "to": "evidence_check"
+    },
+    {
+      "from": "evidence_check",
+      "to": "answer_or_refusal"
+    },
+    {
+      "from": "answer_or_refusal",
+      "to": "trace"
+    }
+  ]
+}
