@@ -1,0 +1,19 @@
+# Final Claim Audit
+
+| Claim | Status | Evidence | Safe wording | Risk if overstated |
+|---|---|---|---|---|
+| 做了 SupportOps Agent。 | safe | `README.md`, `PROJECT_SPEC.md`, `docs/PROJECT_MEMORY.md`, `app/agent_loop.py`, `app/router.py`, `app/memory.py`, `app/tracing.py` | 构建面向客服/运维工单场景的 SupportOps Agent 本地工程 demo。 | 写成生产系统会被追问上线、权限、监控、SLA 和真实用户。 |
+| 做了 IncidentOps / 故障诊断辅助。 | cautious | `README.md`, `data/docs/error_code_manual.md`, `data/docs/rag_upload_troubleshooting.md`, `graph/`, `reports/ablation_results.md` | 支持围绕错误码、上传失败、权限和日志 mock 的故障诊断辅助 demo。 | 不能写自动根因分析或真实 incident response 系统。 |
+| 做了 RAG / Hybrid / GraphRAG / Planner。 | safe | `rag/`, `graph/`, `app/evidence_planner.py`, `app/agent_loop.py`, `evals/supportops_adapters.py`, `reports/ablation_results.md` | 实现 BM25 RAG、BM25+local token-vector Hybrid baseline、in-memory GraphRAG evidence pipeline 和 deterministic planner。 | Hybrid 不是生产 embedding；GraphRAG 不是生产图数据库；Planner 不是 LLM policy。 |
+| 做了 MCP mock tools。 | safe | `mcp_servers/`, `PROJECT_SPEC.md`, `docs/PROJECT_MEMORY.md` | 实现 user/billing/logs/ticket mock tools，写操作默认 dry-run。 | 不能说接入真实企业系统或真实 MCP 服务部署。 |
+| 做了 Skills/SOP。 | safe | `skills/*/SKILL.md`, `app/skill_loader.py`, `app/skill_selector.py` | 用 `SKILL.md` 表达 API key、登录、退款、RAG 上传和 escalation SOP，并接入 skill selection。 | Permission/deployment dedicated skills 仍是 TODO/路由到 escalation，不能说覆盖完整企业 SOP。 |
+| 做了 Dify/Coze-style workflow prototype。 | safe | `docs/lowcode_workflow_prototype.md`, `workflows/dify_supportops_workflow_prototype.json`, `workflows/coze_supportops_workflow_prototype.json` | 补充 Dify/Coze-style workflow prototype artifacts，展示 SupportOps flow 的低代码节点拆解。 | 不能说官方导出、真实部署或生产级低代码机器人。 |
+| 做了 SupportOpsBench 80 cases。 | safe | `evals/supportops_bench.yaml`, `docs/benchmark_design.md`, `tests/test_supportops_eval.py` | 设计 SupportOpsBench v2.4 80-case seed benchmark。 | 不能写大规模 benchmark 或统计上强结论。 |
+| 做了 five-pipeline ablation。 | safe | `reports/ablation_results.md`, `evals/supportops_run_eval.py`, `evals/supportops_adapters.py`, `reports/eval_*_results.json` | 对 dummy、naive RAG、hybrid RAG、GraphRAG、planner 做本地五组 pipeline 初步消融。 | dummy 是 harness sanity check，不能当真实能力。 |
+| 做了 Evidence Recall@5 / Precision@5 / Refusal / Route / Latency。 | safe | `evals/supportops_metrics.py`, `tests/test_supportops_eval.py`, `reports/ablation_results.md` | 实现并报告 Evidence Recall@5、Evidence Precision@5、Refusal Accuracy、Route Accuracy 和本地 latency summary。 | Refusal 是 marker-based；latency 是本地 eval；Route 只适用于 router/planner。 |
+| 做了 GraphRAG evidence-to-document mapping。 | safe | `evals/supportops_adapters.py`, `tests/test_supportops_eval.py`, `reports/failure_cases.md` | 将 graph evidence、linked entities 和 query signals 保守映射到真实 `data/docs/*.md` evidence paths。 | 没有完整 source_doc/source_span grounding，不能写 span-level GraphRAG grounding。 |
+| 做了 trace replay。 | cautious | `app/tracing.py`, `evals/supportops_run_eval.py`, `traces/*.jsonl`, `docs/PROJECT_MEMORY.md` | 实现 trace recording 和 eval JSONL trace output，可用于运行路径审计；完整 replay framework 仍需补充。 | 直接写 trace replay 会被追问 replay CLI、固定输入输出校验和断言。 |
+| 做了 failure analysis。 | safe | `reports/failure_cases.md`, `reports/ablation_results.md` | 记录 high-recall/low-precision、GraphRAG mapping、Route Accuracy、refusal stress 和 latency 等 failure cases。 | 不能写已全部解决；很多是 next-step evidence。 |
+| 做了生产级系统。 | not supported | No production deployment, auth, monitoring, SLA, user traffic, or ops evidence. | 不能写。只能写本地可复现 demo、seed benchmark 和离线评测闭环。 | 极高：会被追问上线、稳定性、安全审批、数据治理和事故处理。 |
+| 做了大规模向量库。 | not supported | No Milvus/FAISS service/vector DB deployment evidence; Hybrid uses local token-vector fallback. | 不能写。可写 BM25 + local token-vector Hybrid baseline。 | 极高：会被问索引规模、召回延迟、更新策略和向量库运维。 |
+| 做了真实企业部署。 | not supported | No deployment logs, customers, screenshots, official exports, traffic, or real enterprise integration evidence. | 不能写。可写 mock enterprise tools and local demo. | 极高：无法提供部署和用户证据。 |
