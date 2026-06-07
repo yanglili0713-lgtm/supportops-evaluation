@@ -1,0 +1,90 @@
+{
+  "project": "SupportOps Evaluation",
+  "benchmark": {
+    "path": "evals/supportops_bench.yaml",
+    "case_count": 80,
+    "schema_adapter": "evals/supportops_bench.yaml is mapped to unified SupportOps Evaluation fields at runtime"
+  },
+  "pipelines": {
+    "dummy": {
+      "case_count": 80,
+      "evidence_recall_at_5": 0.9563,
+      "evidence_precision_at_5": 0.7847,
+      "refusal_accuracy": 0.8375,
+      "route_accuracy": 0.7875,
+      "average_latency_ms": 0.0097,
+      "latency_ms": {
+        "avg": 0.0097,
+        "p50": 0.0089,
+        "p95": 0.0126,
+        "max": 0.0463
+      },
+      "errors": []
+    },
+    "naive": {
+      "case_count": 80,
+      "evidence_recall_at_5": 1.0,
+      "evidence_precision_at_5": 0.2924,
+      "refusal_accuracy": 0.85,
+      "route_accuracy": null,
+      "average_latency_ms": 0.0852,
+      "latency_ms": {
+        "avg": 0.0852,
+        "p50": 0.0607,
+        "p95": 0.1198,
+        "max": 1.2595
+      },
+      "errors": []
+    },
+    "hybrid": {
+      "case_count": 80,
+      "evidence_recall_at_5": 1.0,
+      "evidence_precision_at_5": 0.2924,
+      "refusal_accuracy": 0.85,
+      "route_accuracy": null,
+      "average_latency_ms": 0.2589,
+      "latency_ms": {
+        "avg": 0.2589,
+        "p50": 0.2385,
+        "p95": 0.3844,
+        "max": 0.9527
+      },
+      "errors": []
+    },
+    "graph": {
+      "case_count": 80,
+      "evidence_recall_at_5": 0.8646,
+      "evidence_precision_at_5": 0.8542,
+      "refusal_accuracy": 0.85,
+      "route_accuracy": null,
+      "average_latency_ms": 0.092,
+      "latency_ms": {
+        "avg": 0.092,
+        "p50": 0.0805,
+        "p95": 0.1564,
+        "max": 0.3841
+      },
+      "errors": []
+    },
+    "planner": {
+      "case_count": 80,
+      "evidence_recall_at_5": 0.9625,
+      "evidence_precision_at_5": 0.4421,
+      "refusal_accuracy": 0.85,
+      "route_accuracy": 0.625,
+      "average_latency_ms": 1.4303,
+      "latency_ms": {
+        "avg": 1.4303,
+        "p50": 1.349,
+        "p95": 2.2119,
+        "max": 3.6525
+      },
+      "errors": []
+    }
+  },
+  "outputs": {
+    "report": "reports/report.json",
+    "trace": "traces/trace.jsonl",
+    "failure_analysis": "reports/failure_analysis.md"
+  }
+}
