@@ -178,3 +178,17 @@ python scripts/run_ablation.py --dataset supportops --alpha-sweep 0,0.2,0.4,0.6,
 
 - 项目已经支持 SupportOpsBench 与 BANKING77 两条评测链路；其中 BANKING77 当前可在离线 sample fixture 下完成 smoke 验证，正式全量评测待后续运行。
 - SupportOpsBench 本地 seed 评测已产出真实 JSON / CSV / JSONL 结果，可直接用于简历和复盘。
+
+## BANKING77 Router Evaluation
+
+The project supports BANKING77 intent-router evaluation. In the official full test split evaluation (`train_size=10003`, `test_size=3080`), the TF-IDF + LogisticRegression router reached **Accuracy 0.8929** and **Macro-F1 0.8940**, outperforming the rule baseline (**Accuracy 0.2951**, **Macro-F1 0.2933**). The evaluation report also records confusion cases for intent-level error analysis.
+
+Run command:
+
+```bash
+python scripts/run_router_eval.py \
+  --dataset banking77 \
+  --no-fallback \
+  --max-samples 0 \
+  --output runs/eval_banking77_full/banking77_router_report_full.json \
+  --confusion-out runs/eval_banking77_full/banking77_confusion_cases_full.jsonl

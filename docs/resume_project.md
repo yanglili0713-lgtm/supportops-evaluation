@@ -7,3 +7,6 @@
 * refusal / verifier 指标：设计 refusal policy 与 verifier 检查，对 no-answer 场景和低置信证据进行过滤；在本地 seed 评测中，no-answer refusal accuracy 为 0.95，refusal F1 为 0.80。
 * trace / ablation / failure analysis：构建 JSONL trace、failure case report 和 ablation summary，支持 BM25、Dense、Hybrid、Hybrid without reranker、Hybrid with reranker、Planner-RAG 等消融，以及 top-k 和 chunk size 对照，便于回放检索失败、误拒答和 planner 误路由。通过 alpha sweep 与 failure report 分析 BM25 + Dense 线性融合在强关键词 hard-negative 场景下的排序退化问题。
 * 可视化展示：基于 Streamlit 构建本地可视化 Demo，支持检索策略切换、Top-k evidence 展示、trace 回放、评测指标看板与失败案例分析，便于系统演示与误差定位。
+
+补充评测：在 BANKING77 官方全量 test split（train=10003，test=3080）上，TF-IDF + LogisticRegression router 达到 Accuracy 0.8929、Macro-F1 0.8940，显著优于 rule baseline 的 0.2951 / 0.2933；该结果用于支撑客服意图识别与 router 评测链路。
+
