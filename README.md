@@ -192,3 +192,20 @@ python scripts/run_router_eval.py \
   --max-samples 0 \
   --output runs/eval_banking77_full/banking77_router_report_full.json \
   --confusion-out runs/eval_banking77_full/banking77_confusion_cases_full.jsonl
+
+## Demo Screenshots
+
+The project provides a lightweight Streamlit demo for local inspection, retrieval strategy comparison, trace replay, evaluation dashboard, and failure analysis.
+
+### RAG Demo
+
+![RAG Demo](docs/assets/streamlit_rag_demo.png)
+
+### Evaluation Dashboard
+
+![Evaluation Dashboard](docs/assets/streamlit_eval_dashboard.png)
+
+### Failure Analysis
+
+![Failure Analysis](docs/assets/streamlit_failure_analysis.png)
+
