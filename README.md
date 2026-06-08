@@ -195,16 +195,15 @@ python scripts/run_router_eval.py \
 
 ## Demo Screenshots
 
-The project provides a lightweight Streamlit demo for local inspection, retrieval strategy comparison, trace replay, evaluation dashboard, and failure analysis.
-
 ### RAG Demo
 
-![RAG Demo](docs/assets/streamlit_rag_demo.png)
+<img src="docs/assets/streamlit_rag_demo.png" alt="RAG Demo" width="900">
 
 ### Evaluation Dashboard
 
-![Evaluation Dashboard](docs/assets/streamlit_eval_dashboard.png)
+<img src="docs/assets/streamlit_eval_dashboard.png" alt="Evaluation Dashboard" width="900">
 
 ### Failure Analysis
 
-![Failure Analysis](docs/assets/streamlit_failure_analysis.png)
+<img src="docs/assets/streamlit_failure_analysis.png" alt="Failure Analysis" width="900">
+
