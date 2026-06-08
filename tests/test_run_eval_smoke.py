@@ -8,7 +8,7 @@ def test_run_eval_generates_unified_outputs(tmp_path):
     out_dir = tmp_path / "reports"
     trace_dir = tmp_path / "traces"
 
-    report = run_all_pipelines(out_dir=out_dir, trace_dir=trace_dir)
+    report = run_all_pipelines(out_dir=out_dir, trace_dir=trace_dir, force_fallback_embedding=True)
 
     report_path = out_dir / "report.json"
     trace_path = trace_dir / "trace.jsonl"

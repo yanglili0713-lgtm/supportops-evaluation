@@ -1,0 +1,15 @@
+{"id":"sample_0001","query":"My card has been declined at the ATM, what should I do?","intent":"atm_support","label":"atm_support","split":"sample","source":"sample_fixture"}
+{"id":"sample_0002","query":"How do I activate my card after it arrives?","intent":"activate_my_card","label":"activate_my_card","split":"sample","source":"sample_fixture"}
+{"id":"sample_0003","query":"The balance is not updated after a bank transfer.","intent":"balance_not_updated_after_bank_transfer","label":"balance_not_updated_after_bank_transfer","split":"sample","source":"sample_fixture"}
+{"id":"sample_0004","query":"Can I use Apple Pay with my debit card?","intent":"apple_pay_or_google_pay","label":"apple_pay_or_google_pay","split":"sample","source":"sample_fixture"}
+{"id":"sample_0005","query":"My cash withdrawal was charged twice.","intent":"transaction_charged_twice","label":"transaction_charged_twice","split":"sample","source":"sample_fixture"}
+{"id":"sample_0006","query":"I forgot my passcode, how do I reset it?","intent":"passcode_forgotten","label":"passcode_forgotten","split":"sample","source":"sample_fixture"}
+{"id":"sample_0007","query":"I want to request a refund for a card payment.","intent":"request_refund","label":"request_refund","split":"sample","source":"sample_fixture"}
+{"id":"sample_0008","query":"My transfer has not reached the recipient yet.","intent":"transfer_not_received_by_recipient","label":"transfer_not_received_by_recipient","split":"sample","source":"sample_fixture"}
+{"id":"sample_0009","query":"How do I change my PIN?","intent":"change_pin","label":"change_pin","split":"sample","source":"sample_fixture"}
+{"id":"sample_0010","query":"I cannot withdraw cash from the ATM.","intent":"cash_withdrawal_not_recognised","label":"cash_withdrawal_not_recognised","split":"sample","source":"sample_fixture"}
+{"id":"sample_0011","query":"My card is not working online.","intent":"card_not_working","label":"card_not_working","split":"sample","source":"sample_fixture"}
+{"id":"sample_0012","query":"How long does a card delivery take?","intent":"card_delivery_estimate","label":"card_delivery_estimate","split":"sample","source":"sample_fixture"}
+{"id":"sample_0013","query":"Can I cancel a transfer before it is processed?","intent":"cancel_transfer","label":"cancel_transfer","split":"sample","source":"sample_fixture"}
+{"id":"sample_0014","query":"Why was my top up failed?","intent":"top_up_failed","label":"top_up_failed","split":"sample","source":"sample_fixture"}
+{"id":"sample_0015","query":"How can I verify my identity?","intent":"verify_my_identity","label":"verify_my_identity","split":"sample","source":"sample_fixture"}

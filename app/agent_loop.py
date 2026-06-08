@@ -22,6 +22,9 @@ def run_agent(
     user_message: str,
     case_state: CaseState | None = None,
     traces_dir: str | Path = "traces/runs",
+    force_fallback_embedding: bool | None = None,
+    offline: bool | None = None,
+    mock_backend: bool | None = None,
 ) -> dict:
     state = case_state or CaseState()
     trace = TraceRecorder(user_message=user_message, runs_dir=traces_dir)
@@ -35,7 +38,11 @@ def run_agent(
     trace.record_selected_skill(selected_skill)
     trace.record_case_state(state.to_dict())
 
-    retriever = _build_hybrid_retriever()
+    retriever = _build_hybrid_retriever(
+        force_fallback_embedding=force_fallback_embedding,
+        offline=offline,
+        mock_backend=mock_backend,
+    )
     citations = _retrieve_citations(retriever, user_message)
     rewritten_query = None
     retries = 0
@@ -134,9 +141,19 @@ def run_agent(
     }
 
 
-def _build_hybrid_retriever() -> HybridRetriever:
+def _build_hybrid_retriever(
+    force_fallback_embedding: bool | None = None,
+    offline: bool | None = None,
+    mock_backend: bool | None = None,
+) -> HybridRetriever:
     docs = load_markdown_docs("data/docs")
-    return HybridRetriever(chunk_documents(docs), alpha=0.6)
+    return HybridRetriever(
+        chunk_documents(docs),
+        alpha=0.6,
+        force_fallback=force_fallback_embedding,
+        offline=offline,
+        mock_backend=mock_backend,
+    )
 
 
 def _retrieve_citations(retriever: HybridRetriever, query: str) -> list[dict]:
