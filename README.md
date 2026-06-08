@@ -208,4 +208,3 @@ The project provides a lightweight Streamlit demo for local inspection, retrieva
 ### Failure Analysis
 
 ![Failure Analysis](docs/assets/streamlit_failure_analysis.png)
-
