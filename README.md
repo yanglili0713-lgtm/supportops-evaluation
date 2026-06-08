@@ -119,6 +119,20 @@ python -m streamlit run app/streamlit_app.py --server.address 0.0.0.0 --server.p
 - `Evaluation Dashboard`: 自动读取 `runs/eval/` 或 `runs/eval_smoke/` 的 retrieval summary 和 ablation summary。
 - `Failure Analysis`: 自动读取 failure cases，支持按 `failure_reason` 过滤。
 
+## Demo Screenshots
+
+### RAG Demo
+
+<img src="docs/assets/streamlit_rag_demo.png" alt="RAG Demo" width="900">
+
+### Evaluation Dashboard
+
+<img src="docs/assets/streamlit_eval_dashboard.png" alt="Evaluation Dashboard" width="900">
+
+### Failure Analysis
+
+<img src="docs/assets/streamlit_failure_analysis.png" alt="Failure Analysis" width="900">
+
 ## Results
 
 ### Reproduced local seed results
@@ -192,18 +206,3 @@ python scripts/run_router_eval.py \
   --max-samples 0 \
   --output runs/eval_banking77_full/banking77_router_report_full.json \
   --confusion-out runs/eval_banking77_full/banking77_confusion_cases_full.jsonl
-
-## Demo Screenshots
-
-### RAG Demo
-
-<img src="docs/assets/streamlit_rag_demo.png" alt="RAG Demo" width="900">
-
-### Evaluation Dashboard
-
-<img src="docs/assets/streamlit_eval_dashboard.png" alt="Evaluation Dashboard" width="900">
-
-### Failure Analysis
-
-<img src="docs/assets/streamlit_failure_analysis.png" alt="Failure Analysis" width="900">
-
