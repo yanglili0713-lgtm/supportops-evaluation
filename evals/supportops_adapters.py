@@ -83,17 +83,23 @@ DOC_ID_TO_PATH = {
 }
 
 
-def run_pipeline(pipeline_name: str, query: str) -> dict:
+def run_pipeline(
+    pipeline_name: str,
+    query: str,
+    force_fallback_embedding: bool | None = None,
+    offline: bool | None = None,
+    mock_backend: bool | None = None,
+) -> dict:
     if pipeline_name == "dummy":
         return _run_dummy(query)
     if pipeline_name == "naive":
         return _run_naive(query)
     if pipeline_name == "hybrid":
-        return _run_hybrid(query)
+        return _run_hybrid(query, force_fallback_embedding=force_fallback_embedding, offline=offline, mock_backend=mock_backend)
     if pipeline_name == "graph":
         return _run_graph(query)
     if pipeline_name == "planner":
-        return _run_planner(query)
+        return _run_planner(query, force_fallback_embedding=force_fallback_embedding, offline=offline, mock_backend=mock_backend)
     return _not_implemented(pipeline_name)
 
 
@@ -129,8 +135,17 @@ def _run_naive(query: str) -> dict:
     }
 
 
-def _run_hybrid(query: str) -> dict:
-    results = _hybrid_retriever().search(query, top_k=5)
+def _run_hybrid(
+    query: str,
+    force_fallback_embedding: bool | None = None,
+    offline: bool | None = None,
+    mock_backend: bool | None = None,
+) -> dict:
+    results = _hybrid_retriever(
+        force_fallback_embedding=force_fallback_embedding,
+        offline=offline,
+        mock_backend=mock_backend,
+    ).search(query, top_k=5)
     citations = _format_retrieval_results(results)
     return {
         "answer": _answer_from_citations("hybrid", citations),
@@ -158,8 +173,19 @@ def _run_graph(query: str) -> dict:
     }
 
 
-def _run_planner(query: str) -> dict:
-    result = run_agent(query, traces_dir=Path("traces/runs"))
+def _run_planner(
+    query: str,
+    force_fallback_embedding: bool | None = None,
+    offline: bool | None = None,
+    mock_backend: bool | None = None,
+) -> dict:
+    result = run_agent(
+        query,
+        traces_dir=Path("traces/runs"),
+        force_fallback_embedding=force_fallback_embedding,
+        offline=offline,
+        mock_backend=mock_backend,
+    )
     citations = result.get("citations", [])
     return {
         "answer": result.get("final_answer", ""),
@@ -186,10 +212,20 @@ def _naive_pipeline() -> RAGPipeline:
     return RAGPipeline(docs_dir="data/docs")
 
 
-@lru_cache(maxsize=1)
-def _hybrid_retriever() -> HybridRetriever:
+@lru_cache(maxsize=4)
+def _hybrid_retriever(
+    force_fallback_embedding: bool | None = None,
+    offline: bool | None = None,
+    mock_backend: bool | None = None,
+) -> HybridRetriever:
     docs = load_markdown_docs("data/docs")
-    return HybridRetriever(chunk_documents(docs), alpha=0.6)
+    return HybridRetriever(
+        chunk_documents(docs),
+        alpha=0.6,
+        force_fallback=force_fallback_embedding,
+        offline=offline,
+        mock_backend=mock_backend,
+    )
 
 
 def _format_retrieval_results(results: list) -> list[dict]:

@@ -5,10 +5,20 @@ from rag.hybrid_retriever import HybridRetriever
 from rag.ingest import load_markdown_docs
 
 
-def run_eval() -> dict:
+def run_eval(
+    force_fallback_embedding: bool | None = None,
+    offline: bool | None = None,
+    mock_backend: bool | None = None,
+) -> dict:
     docs = load_markdown_docs("data/docs")
     chunks = chunk_documents(docs)
-    retriever = HybridRetriever(chunks, alpha=0.6)
+    retriever = HybridRetriever(
+        chunks,
+        alpha=0.6,
+        force_fallback=force_fallback_embedding,
+        offline=offline,
+        mock_backend=mock_backend,
+    )
     cases = [
         ("上传PDF后检索不到内容怎么办？", "rag_upload_troubleshooting"),
         ("API Key 失效怎么办？", "api_key_guide"),

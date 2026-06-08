@@ -11,6 +11,8 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0.0"]
+demo = ["streamlit>=1.30.0", "pandas>=2.0.0"]
+retrieval = ["sentence-transformers>=2.2.0", "faiss-cpu>=1.7.4"]
 
 [tool.setuptools]
 packages = ["app", "rag"]

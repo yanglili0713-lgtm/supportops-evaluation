@@ -27,6 +27,10 @@ class RetrievalResult:
     source: str
     text: str
     score: float
+    bm25_score: float | None = None
+    dense_score: float | None = None
+    hybrid_score: float | None = None
+    rerank_score: float | None = None
 
 
 class BM25Retriever:
@@ -62,6 +66,7 @@ class BM25Retriever:
                         source=chunk.source,
                         text=chunk.text,
                         score=score,
+                        bm25_score=score,
                     )
                 )
 

@@ -1,116 +1,180 @@
-# SupportOps Evaluation：面向客服/运维工单的 RAG 检索与诊断评测框架
+# SupportOps-RAG
 
-SupportOps Evaluation 是一个本地可复现的 RAG 检索与诊断评测框架，用于比较 dummy、naive RAG、hybrid RAG、GraphRAG、planner 五组 pipeline 在同一批客服/运维工单 case 上的表现。
+## Project Overview
 
-这个项目的核心是 Evaluation / Benchmark / Pipeline Comparison / Trace / Failure Analysis。它不是课程售后客服业务系统，也不是普通聊天机器人。
+构建面向客服知识库、产品文档与运维工单的检索增强问答与故障诊断系统，针对长文档切分、关键词与语义错配、证据不足导致的错误自信回答及多文档故障定位困难，设计混合检索、证据重排、可控检索决策与可追踪评测机制，提升系统证据召回、拒答可靠性与诊断可解释性。
 
-## What It Evaluates
+## Motivation
 
-当前使用 80-case SupportOpsBench seed benchmark，数据位于 `evals/supportops_bench.yaml`。Benchmark 覆盖：
+这个仓库不是聊天机器人 demo，而是一个可本地复现的 RAG / Agentic Retrieval 评测系统。
+重点在于：
 
-- FAQ
-- API Key recovery
-- credential/token handling
-- permission issue
-- login issue
-- refund policy
-- RAG upload failure
-- incident diagnosis
-- multi-document diagnosis
-- no-answer
-- security boundary
+- 路由是否选对意图；
+- 检索是否召回关键证据；
+- no-answer 是否可靠拒答；
+- planner 是否会误路由；
+- trace 和 failure case 是否能回放。
 
-当前实现保留 YAML benchmark，并通过 `run_eval.py` 中的 schema adapter 映射为统一评测字段。字段说明见 `benchmark/label_schema.md`。
+## Key Features
 
-## Run
+- BANKING77 router 评测，支持官方数据集加载与评测流程，并提供离线 sample fixture 回退；支持 rule baseline 和 TF-IDF + LogisticRegression baseline。
+- SupportOpsBench 检索与故障诊断评测，支持 BM25、BGE Embedding / dense retriever、FAISS-HNSW、Hybrid、Hybrid + Cross-Encoder Reranker、Planner-RAG。
+- 纯本地 trace 输出，包含 case 级检索结果、路由决策、拒答决策和失败原因。
+- 消融实验输出 CSV / JSON，可直接用于汇报或简历整理。
+- 兼容离线环境，BANKING77 可用 sample fixture 回退。
+
+## Dataset
+
+- `BANKING77`: 用于客服意图路由评测，默认尝试从 Hugging Face `PolyAI/banking77` 加载。
+- `SupportOpsBench`: 用于客服 / 运维 RAG 检索、多文档诊断、无答案拒答和安全边界评测。
+
+SupportOpsBench 当前通过 `evals/supportops_bench.yaml` 提供 80 个 seed case，并在 loader 中升级为：
+
+- `id`, `query`, `intent`, `difficulty`
+- `gold_doc_ids`, `gold_answer`, `no_answer`
+- `requires_multi_doc`, `tags`
+
+文档通过 `data/docs/*.md` 自动加载并升级为：
+
+- `doc_id`, `title`, `text`, `source`, `tags`
+
+## Pipeline
+
+1. Router 判断意图。
+2. 检索层执行 BM25 / Dense Embedding / Hybrid / Cross-Encoder Reranker / Planner。
+3. Verifier 和 refusal policy 过滤低置信结果。
+4. 输出 trace、summary 和 failure cases。
+
+## Evaluation Metrics
+
+- `Recall@5 / @10 / @30`
+- `MRR@10`
+- `nDCG@10`
+- `Top-1 evidence precision`
+- `no-answer refusal accuracy`
+- `refusal F1`
+- `P50 / P95 latency`
+
+## How to Run
+
+Router eval:
 
 ```bash
-python run_eval.py
-python run_eval.py --pipelines dummy,naive,hybrid,graph,planner
-python run_eval.py --out-dir reports --trace-dir traces
-pytest
+python scripts/run_router_eval.py --dataset banking77 --max-samples 1000 --output runs/eval/banking77_router_report.json
 ```
 
-默认运行五组 pipeline，并生成统一三件套：
+Offline fallback:
 
-- `reports/report.json`
-- `traces/trace.jsonl`
-- `reports/failure_analysis.md`
+```bash
+python scripts/run_router_eval.py --dataset banking77 --max-samples 1000 --sample-path data/banking77_sample.jsonl --output runs/eval/banking77_router_report.json
+```
 
-## Pipelines
+Retrieval eval:
 
-- `dummy`: Rule-based sanity baseline，用于验证 benchmark harness 和指标链路，不代表真实 Agent 能力。它不是 weak baseline，也不是 oracle baseline：dummy 不读取 `expected_docs`、gold label 或 benchmark answer，但它使用手写规则和文档 taxonomy，因此在当前 seed benchmark 上分数会偏高。
-- `naive RAG`: 基础 BM25/关键词检索 pipeline，重点观察基础 evidence recall。
-- `hybrid RAG`: BM25 + 本地 token-vector 融合检索，并做轻量 rerank，用于比较 recall 与 precision tradeoff。在当前 5-doc seed corpus 上，doc-level Recall@5 / Precision@5 可能与 naive 相同，因为评测按 doc source 去重且 `top_k=5`，粒度较粗；hybrid 的差异主要体现在 chunk、ranking 和 score。
-- `GraphRAG`: Lightweight in-memory graph retrieval layer，用于 entity neighbor expansion 和 evidence aggregation。它更偏 evidence concentration，不保证覆盖所有弱表达 case；它不是 Neo4j 生产级图数据库，也不声称具备生产 GraphRAG 能力。
-- `planner`: Demo-level deterministic planner/agent loop，支持 basic intent routing、case state、skill selection、evidence planning、tool candidate selection、basic refusal handling、verification 和 trace recording。当前 Route Accuracy 暴露出关键词泛化不足。
+```bash
+python scripts/run_retrieval_eval.py --dataset supportops --methods bm25,hybrid,hybrid_reranker,planner --output-dir runs/eval
+```
 
-## Metrics
+Ablation:
 
-- `Evidence Recall@5`: top-5 retrieved documents 中命中 expected evidence documents 的比例。
-- `Evidence Precision@5`: top-5 retrieved documents 中相关 evidence documents 的比例。
-- `Refusal Accuracy`: no-answer/security-boundary case 是否正确拒答，answerable case 是否避免误拒答。当前是基于 refusal marker 的 baseline safety metric，不是严格安全验证。
-- `Route Accuracy`: route_intent 是否等于 gold_intent。该指标主要适用于 routing-capable pipelines，例如 dummy 和 planner；retrieval-only pipeline 会报告 `N/A`。
-- `Latency`: 每条 case 在单个 pipeline 下的本地执行耗时，报告 avg/p50/p95/max。
+```bash
+python scripts/run_ablation.py --dataset supportops --output-dir runs/eval
+```
 
-## Output Contract
+Smoke test:
 
-`reports/report.json` 汇总五组 pipeline 的平均指标：
+```bash
+python scripts/run_retrieval_eval.py --dataset supportops --methods bm25,hybrid --output-dir runs/eval_smoke
+```
 
-- `case_count`
-- `evidence_recall_at_5`
-- `evidence_precision_at_5`
-- `refusal_accuracy`
-- `route_accuracy`
-- `average_latency_ms`
+## Demo UI
 
-`traces/trace.jsonl` 每行记录一个 case 在一个 pipeline 下的执行结果，包含：
+Install the optional demo and retrieval extras first if needed:
 
-- `case_id`
-- `pipeline`
-- `query`
-- `gold_intent`
-- `route_intent`
-- `expected_doc_ids`
-- `retrieved_doc_ids`
-- `answerability`
-- `refusal_decision`
-- `metrics`
-- `latency_ms`
-- `decision_notes`
+```bash
+pip install -e .[demo,retrieval]
+```
 
-`reports/failure_analysis.md` 自动读取 report 和 trace，生成：
+启动本地可视化页面：
 
-- Overview
-- Naive/Hybrid high recall but low precision cases
-- GraphRAG evidence concentration analysis
-- Planner route generalization failures
-- No-answer / security boundary refusal failures
-- Latency tradeoff
-- Next optimization plan
+```bash
+python -m streamlit run app/streamlit_app.py --server.port 8501
+```
 
-## Local-Only Boundary
+浏览器访问：
 
-The project does not call real external APIs and does not use real user data, order data, credentials, secrets, or private production logs. Mock tools and benchmark cases are simulated local data.
+```text
+http://localhost:8501
+```
 
-No heavyweight framework is required. The implementation intentionally avoids LangChain, LlamaIndex, Neo4j, and production service dependencies.
+如果在 WSL 中运行，Windows 浏览器通常也可以直接访问 `localhost:8501`。如果无法访问，再尝试：
 
-## Existing Modules
+```bash
+python -m streamlit run app/streamlit_app.py --server.address 0.0.0.0 --server.port 8501
+```
 
-- `evals/supportops_bench.yaml`: 80-case seed benchmark.
-- `evals/supportops_run_eval.py`: Existing single-pipeline eval runner.
-- `evals/supportops_adapters.py`: Adapter for dummy, naive, hybrid, graph, and planner pipelines.
-- `evals/supportops_metrics.py`: Metric definitions.
-- `evals/failure_analysis.py`: Automatic failure analysis generator.
-- `run_eval.py`: Unified five-pipeline runner and schema adapter.
-- `rag/`: BM25, hybrid retrieval, vector fallback, chunking.
-- `graph/`: In-memory graph seed, entity linker, graph retriever.
-- `app/`: Router, memory, planner loop, verifier, trace recorder.
-- `mcp_servers/`: Local mock tools with dry-run write behavior.
-- `tests/`: Unit and smoke tests.
+页面包含三个部分：
 
-## Interpretation
+- `RAG Demo`: query 输入、retrieval method 切换、top-k 控制、evidence 列表、refusal decision、deterministic demo answer、trace JSON。
+- `Evaluation Dashboard`: 自动读取 `runs/eval/` 或 `runs/eval_smoke/` 的 retrieval summary 和 ablation summary。
+- `Failure Analysis`: 自动读取 failure cases，支持按 `failure_reason` 过滤。
 
-This repository supports resume claims about building a local SupportOps evaluation framework with benchmark cases, pipeline comparison, trace output, metrics, and failure analysis.
+## Results
 
-It should not be described as a production customer-support platform. The benchmark is a seed benchmark, GraphRAG is a lightweight in-memory retrieval layer, the planner is demo-level and deterministic rather than LLM-driven, and the verifier/refusal checks are baseline diagnostics rather than strict answer-faithfulness or safety proofs.
+### Reproduced local seed results
+
+本地 SupportOpsBench seed benchmark 已实际运行，结果文件位于 `runs/eval/`。这些数字来自本地内存检索设置，不代表线上服务延迟。
+
+- `bm25`: Recall@30 100.00%, MRR@10 0.8384, Top-1 evidence precision 73.61%, P95 latency 0.1190 ms.
+- `dense`: Recall@30 100.00%, MRR@10 0.8615, Top-1 evidence precision 77.78%.
+- `hybrid`: Recall@30 100.00%, MRR@10 0.4904, Top-1 evidence precision 31.94%.
+- `hybrid_reranker`: Recall@30 100.00%, MRR@10 0.8064, Top-1 evidence precision 69.44%.
+- `planner`: Route accuracy 62.50%, MRR@10 0.9433, P95 latency 0.3523 ms.
+- `no-answer refusal`: accuracy 0.95, F1 0.80.
+
+### Smoke test results
+
+`runs/eval_smoke/` 已生成 smoke 产物，用于验证脚本、trace 和结果落盘。
+
+### Pending official BANKING77 full evaluation
+
+项目支持 BANKING77 官方数据集加载与评测流程。
+当前仓库内置 `data/banking77_sample.jsonl` 作为离线 smoke fallback；正式的 BANKING77 全量评测结果尚未在当前仓库中产出，因此不在这里声称完成官方全量评测。
+
+## Ablation Study
+
+`runs/eval/ablation_summary.json` 和 `runs/eval/ablation_summary.csv` 已生成，包含：
+
+- BM25 only
+- Dense only
+- Hybrid
+- Hybrid without reranker
+- Hybrid with reranker
+- Planner-RAG
+- Planner-RAG without verifier
+- top-k sweep: 5 / 10 / 30
+- chunk size sweep: 256 / 512 / 1024
+
+## Hybrid Alpha Sweep
+
+在客服 / 运维场景里，API Key、token、错误码、权限字段等强关键词对 BM25 很重要，而语义改写和隐式描述又会让 dense retrieval 更稳。简单线性融合可能在 hard-negative 场景下退化，所以需要扫 alpha 找到更合适的权重。
+
+```bash
+python scripts/run_ablation.py --dataset supportops --alpha-sweep 0,0.2,0.4,0.6,0.8,1.0 --output-dir runs/eval_alpha
+```
+
+`alpha = 1.0` 表示更偏 BM25，`alpha = 0.0` 表示更偏 dense。输出见 `runs/eval_alpha/alpha_sweep_summary.csv` 和 `runs/eval_alpha/alpha_sweep_summary.json`。
+
+## Trace and Failure Analysis
+
+- `runs/eval/trace.jsonl`
+- `runs/eval/failure_cases.jsonl`
+- `runs/eval/retrieval_summary.json`
+- `runs/eval/retrieval_summary.csv`
+
+每条 trace 包含 `case_id`, `query`, `method`, `intent`, `retrieved_doc_ids`, `gold_doc_ids`, `hit_at_5`, `hit_at_10`, `mrr_at_10`, `latency_ms`, `planner_decision`, `refusal_decision`, `failure_reason`。
+
+## Resume Summary
+
+- 项目已经支持 SupportOpsBench 与 BANKING77 两条评测链路；其中 BANKING77 当前可在离线 sample fixture 下完成 smoke 验证，正式全量评测待后续运行。
+- SupportOpsBench 本地 seed 评测已产出真实 JSON / CSV / JSONL 结果，可直接用于简历和复盘。

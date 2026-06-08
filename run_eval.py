@@ -20,6 +20,7 @@ def run_all_pipelines(
     pipelines: list[str] | None = None,
     out_dir: str | Path = "reports",
     trace_dir: str | Path = "traces",
+    force_fallback_embedding: bool | None = None,
 ) -> dict[str, Any]:
     selected_pipelines = pipelines or DEFAULT_PIPELINES
     cases = load_bench(bench_path)
@@ -45,7 +46,11 @@ def run_all_pipelines(
                 error = None
                 prediction = {"answer": "", "retrieved_docs": [], "route": None, "raw": {}}
                 try:
-                    prediction = run_pipeline(pipeline_name, case["query"])
+                    prediction = run_pipeline(
+                        pipeline_name,
+                        case["query"],
+                        force_fallback_embedding=force_fallback_embedding,
+                    )
                 except Exception as exc:  # noqa: BLE001 - eval should continue per case.
                     error = str(exc)
                     errors.append({"case_id": normalized_case["case_id"], "error": error})
@@ -203,6 +208,12 @@ def main() -> None:
     parser.add_argument("--pipelines", default=",".join(DEFAULT_PIPELINES))
     parser.add_argument("--out-dir", default="reports")
     parser.add_argument("--trace-dir", default="traces")
+    parser.add_argument(
+        "--embedding-backend",
+        choices=["fallback", "real"],
+        default="fallback",
+        help="Use fallback to keep tests offline, or real embeddings when you want to benchmark them.",
+    )
     args = parser.parse_args()
 
     report = run_all_pipelines(
@@ -210,6 +221,7 @@ def main() -> None:
         pipelines=parse_pipelines(args.pipelines),
         out_dir=args.out_dir,
         trace_dir=args.trace_dir,
+        force_fallback_embedding=args.embedding_backend == "fallback",
     )
     print(json.dumps(report["pipelines"], ensure_ascii=False, indent=2))
 
